@@ -79,16 +79,16 @@
         .card {
             background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
             border-radius: 10px;
-            padding: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            min-height: 120px;
+            aspect-ratio: 1 / 1;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
@@ -99,7 +99,6 @@
         .card.flipped {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: perspective(1000px) rotateY(180deg);
             border-color: #667eea;
         }
 
@@ -110,16 +109,43 @@
             border-color: #4caf50;
         }
 
-        .card-content {
-            font-size: 1.1em;
-            font-weight: bold;
-            text-align: center;
-            word-break: break-word;
+        .card-front {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-back {
+            display: none;
+        }
+
+        .card.flipped .card-front {
+            display: none;
+        }
+
+        .card.flipped .card-back {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
         }
 
         .card-symbol {
-            font-size: 2em;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .card-content {
+            font-size: 0.9em;
+            font-weight: bold;
+            text-align: center;
+            word-break: break-word;
+            padding: 0 10px;
         }
 
         .controls {
@@ -222,17 +248,12 @@
                 align-items: flex-start;
             }
 
-            .card {
-                min-height: 100px;
-                padding: 15px;
-            }
-
             .card-content {
-                font-size: 1em;
+                font-size: 0.85em;
             }
 
             .card-symbol {
-                font-size: 1.5em;
+                font-size: 2em;
             }
         }
 
@@ -283,24 +304,16 @@
     </div>
 
     <script>
-        // Mathematik-Begriffe für die 5. Klasse
+        // Mathematik-Begriffe für die 5. Klasse mit passenden Symbolen
         const mathTerms = [
-            { term: "Summe", definition: "Ergebnis einer Addition (z.B. 5 + 3 = 8)" },
-            { term: "Differenz", definition: "Ergebnis einer Subtraktion (z.B. 10 - 4 = 6)" },
-            { term: "Produkt", definition: "Ergebnis einer Multiplikation (z.B. 4 × 5 = 20)" },
-            { term: "Quotient", definition: "Ergebnis einer Division (z.B. 15 : 3 = 5)" },
-            { term: "Faktor", definition: "Zahl, die multipliziert wird (z.B. 4 × 5: 4 und 5 sind Faktoren)" },
-            { term: "Summand", definition: "Zahl, die addiert wird (z.B. 5 + 3: 5 und 3 sind Summanden)" },
-            { term: "Minuend", definition: "Zahl, von der subtrahiert wird (z.B. 10 - 4: 10 ist der Minuend)" },
-            { term: "Subtrahend", definition: "Zahl, die subtrahiert wird (z.B. 10 - 4: 4 ist der Subtrahend)" },
-            { term: "Dividend", definition: "Zahl, die geteilt wird (z.B. 15 : 3: 15 ist der Dividend)" },
-            { term: "Divisor", definition: "Zahl, durch die geteilt wird (z.B. 15 : 3: 3 ist der Divisor)" },
-            { term: "Addition", definition: "Rechenart: Zahlen werden addiert (+)" },
-            { term: "Subtraktion", definition: "Rechenart: Zahlen werden subtrahiert (-)" },
-            { term: "Multiplikation", definition: "Rechenart: Zahlen werden multipliziert (×)" },
-            { term: "Division", definition: "Rechenart: Zahlen werden dividiert (:)" },
-            { term: "Klammer", definition: "Zeichen, das die Rechenreihenfolge festlegt (z.B. (5 + 3) × 2)" },
-            { term: "Potenz", definition: "Mehrfache Multiplikation (z.B. 2³ = 2 × 2 × 2 = 8)" }
+            { term: "Summe", definition: "Ergebnis einer Addition (z.B. 5 + 3 = 8)", symbol: "➕" },
+            { term: "Differenz", definition: "Ergebnis einer Subtraktion (z.B. 10 - 4 = 6)", symbol: "➖" },
+            { term: "Produkt", definition: "Ergebnis einer Multiplikation (z.B. 4 × 5 = 20)", symbol: "✖️" },
+            { term: "Quotient", definition: "Ergebnis einer Division (z.B. 15 : 3 = 5)", symbol: "➗" },
+            { term: "Faktor", definition: "Zahl, die multipliziert wird (z.B. 4 × 5: 4 und 5 sind Faktoren)", symbol: "🔢" },
+            { term: "Summand", definition: "Zahl, die addiert wird (z.B. 5 + 3: 5 und 3 sind Summanden)", symbol: "🔢" },
+            { term: "Minuend", definition: "Zahl, von der subtrahiert wird (z.B. 10 - 4: 10 ist der Minuend)", symbol: "🔢" },
+            { term: "Subtrahend", definition: "Zahl, die subtrahiert wird (z.B. 10 - 4: 4 ist der Subtrahend)", symbol: "🔢" }
         ];
 
         // Spielvariablen
@@ -323,9 +336,6 @@
         const playAgainBtn = document.getElementById('play-again-btn');
         const congratulations = document.getElementById('congratulations');
         const finalStats = document.getElementById('final-stats');
-
-        // Symbole für die Karten
-        const symbols = ['🔢', '➕', '➖', '✖️', '➗', '📊', '🧮', '📈', '🔍', '🎯', '✨', '💡', '📚', '🔥', '🌟', '🎲'];
 
         // Spiel initialisieren
         function initGame() {
@@ -355,17 +365,14 @@
         function createCards() {
             cards = [];
             
-            // Ausgewählte Begriffe (8 Paare für ein gutes Spiel)
-            const selectedTerms = mathTerms.slice(0, 8);
-            
             // Für jedes Begriffs-Paar zwei Karten erstellen
-            selectedTerms.forEach((item, index) => {
+            mathTerms.forEach((item, index) => {
                 cards.push({
                     id: `term-${index}`,
                     content: item.term,
                     type: 'term',
                     matched: false,
-                    symbol: symbols[index % symbols.length]
+                    symbol: item.symbol
                 });
                 
                 cards.push({
@@ -373,7 +380,7 @@
                     content: item.definition,
                     type: 'definition',
                     matched: false,
-                    symbol: symbols[index % symbols.length]
+                    symbol: item.symbol
                 });
             });
         }
@@ -397,8 +404,13 @@
                 cardElement.dataset.type = card.type;
                 
                 cardElement.innerHTML = `
-                    <div class="card-symbol">${card.symbol}</div>
-                    <div class="card-content">${card.content}</div>
+                    <div class="card-front">
+                        <div class="card-symbol">${card.symbol}</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="card-symbol">${card.symbol}</div>
+                        <div class="card-content">${card.content}</div>
+                    </div>
                 `;
                 
                 if (card.matched) {
@@ -442,11 +454,6 @@
 
         // Überprüfen, ob die Karten ein Paar bilden
         function checkForMatch() {
-            const firstCardData = cards.find(c => c.id === firstCard.dataset.id);
-            const secondCardData = cards.find(c => c.id === secondCard.dataset.id);
-
-            // Prüfen, ob die Karten zusammengehören
-            // Eine Karte ist der Begriff, die andere die Definition
             const firstIndex = parseInt(firstCard.dataset.id.split('-')[1]);
             const secondIndex = parseInt(secondCard.dataset.id.split('-')[1]);
 
