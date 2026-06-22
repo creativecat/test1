@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Übersicht - HTML-Seiten</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a90e2;
+        }
+
+        header h1 {
+            color: #4a90e2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .page-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .page-card {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .page-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border-color: #4a90e2;
+        }
+
+        .page-card h2 {
+            color: #4a90e2;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .page-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .page-card a {
+            display: inline-block;
+            background-color: #4a90e2;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .page-card a:hover {
+            background-color: #3a7bc8;
+        }
+
+        .page-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .page-list {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 HTML-Seiten Übersicht</h1>
+            <p>Hier findest du alle verfügbaren HTML-Seiten in diesem Repository.</p>
+        </header>
+
+        <div class="page-list" id="page-list">
+            <!-- Seiten werden hier dynamisch eingefügt -->
+        </div>
+
+        <footer>
+            <p>Letzte Aktualisierung: <span id="last-updated"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Liste der Seiten mit Beschreibungen
+        const pages = [
+            {
+                filename: "pong.html",
+                title: "Pong Spiel",
+                description: "Ein klassisches Pong-Spiel für zwei Spieler auf einer Tastatur.",
+                icon: "🎮"
+            },
+            {
+                filename: "nuernberg_quiz.html",
+                title: "Nürnberg-Quiz",
+                description: "Ein interaktives Quiz mit 10 Fragen über die Stadt Nürnberg.",
+                icon: "🏰"
+            },
+            {
+                filename: "tictactoe.html",
+                title: "Tic-Tac-Toe",
+                description: "Ein klassisches Tic-Tac-Toe-Spiel für zwei Spieler.",
+                icon: "❌⭕"
+            },
+            {
+                filename: "seite1.html",
+                title: "Seite 1",
+                description: "Eine Beispielseite.",
+                icon: "📄"
+            }
+        ];
+
+        // Seiten dynamisch laden
+        function loadPages() {
+            const pageList = document.getElementById('page-list');
+            pageList.innerHTML = '';
+
+            pages.forEach(page => {
+                const card = document.createElement('div');
+                card.className = 'page-card';
+                card.innerHTML = `
+                    <div class="icon">${page.icon}</div>
+                    <h2>${page.title}</h2>
+                    <p>${page.description}</p>
+                    <a href="${page.filename}">Öffnen</a>
+                `;
+                pageList.appendChild(card);
+            });
+
+            // Datum der letzten Aktualisierung setzen
+            const lastUpdated = new Date(document.lastModified);
+            document.getElementById('last-updated').textContent = lastUpdated.toLocaleDateString('de-DE', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Seite laden
+        window.addEventListener('load', loadPages);
+    </script>
+</body>
+</html>
