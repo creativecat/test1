@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong - Zwei-Spieler-Version</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #111;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #game-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background-color: #000;
+            border: 2px solid #444;
+        }
+        #game-canvas {
+            background-color: #000;
+        }
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 14px;
+            text-align: center;
+        }
+        #start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            z-index: 10;
+        }
+        #start-screen h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        #start-screen p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        #start-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover {
+            background-color: #45a049;
+        }
+        #pause-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            z-index: 10;
+        }
+        #pause-screen h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        #resume-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #quit-button {
+            padding: 12px 25px;
+            font-size: 16px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas" width="800" height="500"></canvas>
+        <div id="score">0 : 0</div>
+        <div id="instructions">Spieler 1: W/S | Spieler 2: ↑/↓ | Pause: Leertaste</div>
+        
+        <div id="start-screen">
+            <h1>PONG</h1>
+            <p>Zwei-Spieler-Modus<br>Spieler 1: W (hoch) / S (runter)<br>Spieler 2: ↑ (hoch) / ↓ (runter)<br>Pause: Leertaste</p>
+            <button id="start-button">Spiel starten</button>
+        </div>
+        
+        <div id="pause-screen">
+            <h2>PAUSE</h2>
+            <button id="resume-button">Fortsetzen</button>
+            <button id="quit-button">Beenden</button>
+        </div>
+    </div>
+
+    <script>
+        // Spielvariablen
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const startScreen = document.getElementById('start-screen');
+        const pauseScreen = document.getElementById('pause-screen');
+        const startButton = document.getElementById('start-button');
+        const resumeButton = document.getElementById('resume-button');
+        const quitButton = document.getElementById('quit-button');
+
+        // Spielzustand
+        let gameRunning = false;
+        let gamePaused = false;
+
+        // Paddles
+        const paddleWidth = 15;
+        const paddleHeight = 100;
+        const paddleSpeed = 8;
+        
+        let leftPaddle = {
+            x: 30,
+            y: canvas.height / 2 - paddleHeight / 2,
+            width: paddleWidth,
+            height: paddleHeight,
+            score: 0
+        };
+
+        let rightPaddle = {
+            x: canvas.width - 30 - paddleWidth,
+            y: canvas.height / 2 - paddleHeight / 2,
+            width: paddleWidth,
+            height: paddleHeight,
+            score: 0
+        };
+
+        // Ball
+        const ballSize = 15;
+        let ball = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            size: ballSize,
+            speedX: 5,
+            speedY: 5,
+            reset: function() {
+                this.x = canvas.width / 2;
+                this.y = canvas.height / 2;
+                // Zufällige Richtung
+                this.speedX = (Math.random() > 0.5 ? 1 : -1) * 5;
+                this.speedY = (Math.random() * 4 - 2); // Kleine Zufälligkeit in Y-Richtung
+            }
+        };
+
+        // Tastenzustände
+        let keys = {
+            w: false,
+            s: false,
+            ArrowUp: false,
+            ArrowDown: false
+        };
+
+        // Event Listener für Tastatur
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                if (gameRunning) {
+                    togglePause();
+                }
+                return;
+            }
+            
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = true;
+            }
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = false;
+            }
+        });
+
+        // Start-Button
+        startButton.addEventListener('click', function() {
+            startGame();
+        });
+
+        // Fortsetzen-Button
+        resumeButton.addEventListener('click', function() {
+            togglePause();
+        });
+
+        // Beenden-Button
+        quitButton.addEventListener('click', function() {
+            endGame();
+        });
+
+        // Spiel starten
+        function startGame() {
+            leftPaddle.score = 0;
+            rightPaddle.score = 0;
+            updateScore();
+            ball.reset();
+            gameRunning = true;
+            gamePaused = false;
+            startScreen.style.display = 'none';
+            pauseScreen.style.display = 'none';
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Spiel beenden
+        function endGame() {
+            gameRunning = false;
+            gamePaused = false;
+            startScreen.style.display = 'flex';
+            pauseScreen.style.display = 'none';
+        }
+
+        // Pause umschalten
+        function togglePause() {
+            gamePaused = !gamePaused;
+            pauseScreen.style.display = gamePaused ? 'flex' : 'none';
+        }
+
+        // Score aktualisieren
+        function updateScore() {
+            scoreDisplay.textContent = `${leftPaddle.score} : ${rightPaddle.score}`;
+        }
+
+        // Paddles bewegen
+        function movePaddles() {
+            // Linkes Paddle (Spieler 1: W/S)
+            if (keys.w && leftPaddle.y > 0) {
+                leftPaddle.y -= paddleSpeed;
+            }
+            if (keys.s && leftPaddle.y < canvas.height - leftPaddle.height) {
+                leftPaddle.y += paddleSpeed;
+            }
+
+            // Rechtes Paddle (Spieler 2: Pfeiltasten)
+            if (keys.ArrowUp && rightPaddle.y > 0) {
+                rightPaddle.y -= paddleSpeed;
+            }
+            if (keys.ArrowDown && rightPaddle.y < canvas.height - rightPaddle.height) {
+                rightPaddle.y += paddleSpeed;
+            }
+        }
+
+        // Ball bewegen
+        function moveBall() {
+            ball.x += ball.speedX;
+            ball.y += ball.speedY;
+
+            // Kollision mit oberer und unterer Wand
+            if (ball.y <= 0 || ball.y >= canvas.height - ball.size) {
+                ball.speedY = -ball.speedY;
+            }
+
+            // Kollision mit Paddles
+            // Linkes Paddle
+            if (ball.x <= leftPaddle.x + leftPaddle.width &&
+                ball.x + ball.size >= leftPaddle.x &&
+                ball.y + ball.size >= leftPaddle.y &&
+                ball.y <= leftPaddle.y + leftPaddle.height) {
+                ball.speedX = -ball.speedX * 1.05; // Ball wird etwas schneller
+                // Berechne den Winkel basierend auf der Position des Aufpralls
+                const hitPosition = (ball.y + ball.size/2 - leftPaddle.y) / leftPaddle.height;
+                ball.speedY = (hitPosition - 0.5) * 8; // Anpassung der Y-Geschwindigkeit
+            }
+
+            // Rechtes Paddle
+            if (ball.x + ball.size >= rightPaddle.x &&
+                ball.x <= rightPaddle.x + rightPaddle.width &&
+                ball.y + ball.size >= rightPaddle.y &&
+                ball.y <= rightPaddle.y + rightPaddle.height) {
+                ball.speedX = -ball.speedX * 1.05; // Ball wird etwas schneller
+                // Berechne den Winkel basierend auf der Position des Aufpralls
+                const hitPosition = (ball.y + ball.size/2 - rightPaddle.y) / rightPaddle.height;
+                ball.speedY = (hitPosition - 0.5) * 8; // Anpassung der Y-Geschwindigkeit
+            }
+
+            // Punkt für rechten Spieler (Ball geht links raus)
+            if (ball.x < 0) {
+                rightPaddle.score++;
+                updateScore();
+                ball.reset();
+            }
+
+            // Punkt für linken Spieler (Ball geht rechts raus)
+            if (ball.x > canvas.width) {
+                leftPaddle.score++;
+                updateScore();
+                ball.reset();
+            }
+        }
+
+        // Alles zeichnen
+        function draw() {
+            // Hintergrund
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Mittellinie
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 10]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Paddles zeichnen
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
+            ctx.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
+
+            // Ball zeichnen
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(ball.x, ball.y, ball.size, ball.size);
+        }
+
+        // Hauptspielschleife
+        function gameLoop() {
+            if (!gameRunning) return;
+            
+            if (!gamePaused) {
+                movePaddles();
+                moveBall();
+            }
+            
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Initialisierung
+        function init() {
+            startScreen.style.display = 'flex';
+            pauseScreen.style.display = 'none';
+            updateScore();
+        }
+
+        // Spiel starten, wenn die Seite geladen ist
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
