@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>KI-gestützte Webentwicklung: Interaktive Websites in Minuten erstellen</title>
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/theme/black.min.css" id="theme">
+	
+	<style>
+		.moderator-container {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #1a1a1a;
+			color: #e0e0e0;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			padding: 20px;
+			box-sizing: border-box;
+			z-index: 1000;
+			overflow-y: auto;
+		}
+		
+		.moderator-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+			padding-bottom: 15px;
+			border-bottom: 2px solid #333;
+		}
+		
+		.moderator-title {
+			font-size: 1.8em;
+			font-weight: bold;
+			color: #4fc3f7;
+			margin: 0;
+		}
+		
+		.moderator-controls {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+		
+		.moderator-button {
+			background: #333;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 1em;
+			transition: all 0.3s ease;
+		}
+		
+		.moderator-button:hover {
+			background: #4fc3f7;
+			transform: translateY(-2px);
+		}
+		
+		.moderator-button:active {
+			transform: translateY(0);
+		}
+		
+		.moderator-main {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 20px;
+			margin-top: 20px;
+		}
+		
+		.moderator-slide-preview {
+			background: #2a2a2a;
+			border-radius: 8px;
+			padding: 15px;
+			border: 1px solid #444;
+		}
+		
+		.moderator-slide-preview h3 {
+			color: #4fc3f7;
+			margin-top: 0;
+			border-bottom: 1px solid #444;
+			padding-bottom: 10px;
+		}
+		
+		.moderator-slide-preview .preview-content {
+			font-size: 0.9em;
+			color: #bbb;
+		}
+		
+		.moderator-notes {
+			background: #2a2a2a;
+			border-radius: 8px;
+			padding: 15px;
+			border: 1px solid #444;
+		}
+		
+		.moderator-notes h3 {
+			color: #4fc3f7;
+			margin-top: 0;
+			border-bottom: 1px solid #444;
+			padding-bottom: 10px;
+		}
+		
+		.moderator-notes textarea {
+			width: 100%;
+			height: 300px;
+			background: #1a1a1a;
+			color: #e0e0e0;
+			border: 1px solid #444;
+			border-radius: 5px;
+			padding: 10px;
+			font-family: inherit;
+			font-size: 1em;
+			resize: none;
+		}
+		
+		.moderator-info {
+			background: #2a2a2a;
+			border-radius: 8px;
+			padding: 15px;
+			border: 1px solid #444;
+			margin-top: 20px;
+		}
+		
+		.moderator-info h3 {
+			color: #4fc3f7;
+			margin-top: 0;
+			border-bottom: 1px solid #444;
+			padding-bottom: 10px;
+		}
+		
+		.moderator-info p {
+			margin: 5px 0;
+			color: #bbb;
+		}
+		
+		.clock {
+			font-family: monospace;
+			font-size: 1.2em;
+			color: #4fc3f7;
+		}
+		
+		.reveal {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		
+		.reveal h1, .reveal h2, .reveal h3 {
+			color: #4fc3f7;
+			text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+		}
+		
+		.reveal section {
+			padding: 40px;
+			text-align: center;
+		}
+		
+		.reveal .fragment {
+			opacity: 0;
+			transform: translateY(20px);
+			transition: all 0.5s ease;
+		}
+		
+		.reveal .fragment.visible {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		.reveal pre code {
+			background: rgba(0, 0, 0, 0.8);
+			padding: 15px;
+			border-radius: 8px;
+			font-size: 0.9em;
+			line-height: 1.5;
+		}
+		
+		.example-button {
+			display: inline-block;
+			background: #4fc3f7;
+			color: #1a1a1a;
+			padding: 12px 25px;
+			border-radius: 25px;
+			text-decoration: none;
+			font-weight: bold;
+			margin: 10px;
+			transition: all 0.3s ease;
+			border: 2px solid #4fc3f7;
+		}
+		
+		.example-button:hover {
+			background: transparent;
+			color: #4fc3f7;
+			transform: scale(1.05);
+		}
+		
+		.ai-icon {
+			font-size: 3em;
+			margin: 20px 0;
+			animation: pulse 2s infinite;
+		}
+		
+		@keyframes pulse {
+			0% { transform: scale(1); }
+			50% { transform: scale(1.1); }
+			100% { transform: scale(1); }
+		}
+		
+		.examples-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 20px;
+			margin: 30px 0;
+		}
+		
+		.example-card {
+			background: rgba(79, 195, 247, 0.1);
+			border: 2px solid #4fc3f7;
+			border-radius: 10px;
+			padding: 20px;
+			transition: all 0.3s ease;
+		}
+		
+		.example-card:hover {
+			background: rgba(79, 195, 247, 0.2);
+			transform: translateY(-5px);
+		}
+		
+		.sync-hint {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			background: rgba(79, 195, 247, 0.9);
+			color: #1a1a1a;
+			padding: 10px 15px;
+			border-radius: 20px;
+			font-size: 0.8em;
+			z-index: 100;
+			animation: fadeIn 1s ease;
+		}
+		
+		@keyframes fadeIn {
+			from { opacity: 0; transform: translateY(20px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+		
+		@media (max-width: 768px) {
+			.moderator-main {
+				grid-template-columns: 1fr;
+			}
+			.reveal section {
+				padding: 20px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="moderator-container" id="moderatorView">
+		<div class="moderator-header">
+			<h1 class="moderator-title">🎤 Moderatorenansicht</h1>
+			<div class="clock" id="currentTime">--:--:--</div>
+		</div>
+		
+		<div class="moderator-main">
+			<div class="moderator-slide-preview">
+				<h3>📄 Aktuelle Folie</h3>
+				<div class="preview-content">
+					<p><strong>Aktuelle Folie:</strong> <span id="moderatorCurrentSlide">1</span> / <span id="moderatorTotalSlides">1</span></p>
+					<p><strong>Titel:</strong> <span id="moderatorSlideTitle">Lade...</span></p>
+				</div>
+			</div>
+			
+			<div class="moderator-notes">
+				<h3>📝 Notizen</h3>
+				<textarea id="moderatorNotes" placeholder="Notizen zur aktuellen Folie..."></textarea>
+			</div>
+		</div>
+		
+		<div class="moderator-controls">
+			<button class="moderator-button" id="moderatorPrev">⏮ Zurück</button>
+			<button class="moderator-button" id="moderatorNext">Weiter ⏭</button>
+			<button class="moderator-button" id="moderatorFirst">📌 Erste Folie</button>
+			<button class="moderator-button" id="moderatorLast">📌 Letzte Folie</button>
+			<button class="moderator-button" id="moderatorToggleView">Präsentation anzeigen</button>
+		</div>
+		
+		<div class="moderator-info">
+			<h3>ℹ️ Informationen</h3>
+			<p><strong>Synchronisationsstatus:</strong> <span id="syncStatus">✅ Verbunden</span></p>
+			<p><strong>Letzte Aktualisierung:</strong> <span id="lastUpdate">-</span></p>
+			<p><strong>Tipp:</strong> Öffne diese Präsentation in einem zweiten Tab mit <code>?moderator=true</code> für die Moderatorenansicht.</p>
+		</div>
+	</div>
+
+	<div class="reveal">
+		<div class="slides">
+			<section data-state="title-slide">
+				<div class="ai-icon">🤖</div>
+				<h1>KI-gestützte Webentwicklung</h1>
+				<h2>Interaktive Websites in Minuten erstellen</h2>
+				<p style="margin-top: 30px; font-size: 1.2em; color: #bbb;">
+					Mit KI-Tools von der Idee zur lauffähigen Website
+				</p>
+				<p style="margin-top: 20px; font-size: 0.9em; color: #888;">
+					Fortbildung für Lehrkräfte & Interessierte | <span id="presentationDate"></span>
+				</p>
+			</section>
+
+			<section>
+				<h2>Warum KI für Webentwicklung?</h2>
+				<div class="fragment">
+					<p style="font-size: 1.3em;">✅ <strong>Schnellere Entwicklung</strong></p>
+					<p>Von der Idee zum Prototypen in Minuten statt Stunden</p>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.3em;">✅ <strong>Geringere Einstiegshürde</strong></p>
+					<p>Auch ohne tiefes Programmierwissen möglich</p>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.3em;">✅ <strong>Kreative Freiheit</strong></p>
+					<p>KI als Assistent – Sie behalten die Kontrolle</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>Die Technologien dahinter</h2>
+				<div class="examples-grid">
+					<div class="example-card fragment">
+						<h3>🧠 KI-Modelle</h3>
+						<p>LLMs für Code-Generierung</p>
+					</div>
+					<div class="example-card fragment">
+						<h3>🌐 Web-Technologien</h3>
+						<p>HTML5, CSS3, JavaScript</p>
+					</div>
+					<div class="example-card fragment">
+						<h3>💾 Lokale Speicher</h3>
+						<p>localStorage, IndexedDB</p>
+					</div>
+					<div class="example-card fragment">
+						<h3>🔄 Synchronisation</h3>
+						<p>BroadcastChannel, StorageEvents</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>📝 Beispiel 1: Interaktives Quiz</h2>
+				<div class="fragment">
+					<p style="font-size: 1.2em;"><strong>Funktionen:</strong></p>
+					<ul style="text-align: left; display: inline-block; font-size: 1.1em;">
+						<li>Multiple-Choice-Fragen</li>
+						<li>Sofortiges Feedback mit CSS-Animationen</li>
+						<li>Score-Tracking in localStorage</li>
+						<li>Zeitlimit & Countdown</li>
+					</ul>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.2em; margin-top: 20px;"><strong>KI-Prompt:</strong></p>
+					<p style="font-size: 0.95em; color: #bbb;">"Erstelle ein HTML/JS/CSS-Quiz mit 5 Fragen, das den Score in localStorage speichert."</p>
+				</div>
+				<a href="#" class="example-button fragment">Live-Demo anzeigen</a>
+			</section>
+
+			<section>
+				<h2>🎨 Beispiel 2: Kollaboratives Whiteboard</h2>
+				<div class="fragment">
+					<p style="font-size: 1.2em;"><strong>Funktionen:</strong></p>
+					<ul style="text-align: left; display: inline-block; font-size: 1.1em;">
+						<li>Zeichnen mit Canvas-API</li>
+						<li>Farben & Pinselgröße einstellbar</li>
+						<li>Echtzeit-Synchronisation zwischen Tabs</li>
+						<li>Speichern/Laden der Zeichnung</li>
+					</ul>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.2em; margin-top: 20px;"><strong>Technische Highlights:</strong></p>
+					<p><code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">BroadcastChannel</code> für Synchronisation | <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">Canvas 2D Context</code> für Zeichnungen</p>
+				</div>
+				<a href="#" class="example-button fragment">Live-Demo anzeigen</a>
+			</section>
+
+			<section>
+				<h2>📚 Beispiel 3: Digitale Notizkarten</h2>
+				<div class="fragment">
+					<p style="font-size: 1.2em;"><strong>Funktionen:</strong></p>
+					<ul style="text-align: left; display: inline-block; font-size: 1.1em;">
+						<li>Karteikarten mit 3D-Flip-Animation</li>
+						<li>Kategorien & Suchfunktion</li>
+						<li>Lernfortschritt in IndexedDB</li>
+						<li>Export als PDF/JSON</li>
+					</ul>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.2em; margin-top: 20px;"><strong>CSS3-Highlight:</strong></p>
+					<pre><code>transform-style: preserve-3d;
+backface-visibility: hidden;
+transition: transform 0.6s;</code></pre>
+				</div>
+				<a href="#" class="example-button fragment">Live-Demo anzeigen</a>
+			</section>
+
+			<section>
+				<h2>🚀 Ihr Workflow mit KI</h2>
+				<div class="fragment">
+					<p style="font-size: 1.3em;"><strong>1. Idee beschreiben</strong></p>
+					<p>"Ich möchte eine Website, die X kann und Y anzeigt."</p>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.3em;"><strong>2. KI generiert Code</strong></p>
+					<p>HTML, CSS, JavaScript – alles in einer Datei</p>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.3em;"><strong>3. Anpassen & Testen</strong></p>
+					<p>Code verstehen, anpassen, im Browser testen</p>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.3em;"><strong>4. Auf GitHub hosten</strong></p>
+					<p>Einfaches Hochladen – sofort online!</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>📤 Deployment auf GitHub</h2>
+				<div class="fragment">
+					<p style="font-size: 1.3em;">So einfach geht's:</p>
+					<ol style="text-align: left; display: inline-block; font-size: 1.1em;">
+						<li>Repository auf GitHub erstellen</li>
+						<li>HTML-Datei hochladen</li>
+						<li>GitHub Pages aktivieren</li>
+						<li>Fertig! Website ist online</li>
+					</ol>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.2em; margin-top: 20px;"><strong>Vorteile:</strong></p>
+					<p>✅ Kostenlos | ✅ Kein Server nötig | ✅ Versionierung inklusive</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>🎯 Fazit & Ausblick</h2>
+				<div class="fragment">
+					<p style="font-size: 1.3em;"><strong>Was Sie heute mitnehmen:</strong></p>
+					<ul style="text-align: left; display: inline-block; font-size: 1.1em;">
+						<li>KI kann Code generieren – Sie steuern das Design</li>
+						<li>Lokale Speicher ermöglichen komplexe Funktionen ohne Backend</li>
+						<li>Synchronisation zwischen Tabs ist mit Browser-APIs möglich</li>
+						<li>GitHub Pages ist die einfachste Methode zum Hosting</li>
+					</ul>
+				</div>
+				<div class="fragment">
+					<p style="font-size: 1.3em; margin-top: 20px;"><strong>Nächste Schritte:</strong></p>
+					<p>Probieren Sie es aus! Beginnen Sie mit einem einfachen Projekt.</p>
+				</div>
+				<div class="fragment" style="margin-top: 30px;">
+					<p style="font-size: 1.5em; color: #4fc3f7;"><strong>🚀 Viel Erfolg beim Entwickeln!</strong></p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/plugin/notes/notes.min.js"></script>
+	
+	<script>
+		const SLIDE_NOTES = [
+			"Herzlich willkommen! Stellen Sie sich vor: Sie beschreiben in einfachen Worten, was Ihre Website können soll – und die KI generiert den Code. Heute sehen wir, wie das funktioniert und was möglich ist.\n\nTipp: Zeigen Sie die Moderatorenansicht (neuer Tab mit ?moderator=true).",
+			"Betonen: KI ersetzt nicht das Verständnis, sondern beschleunigt den Prozess. Beispiel: Statt stundenlang nach CSS-Animationen zu suchen, generiert die KI sie direkt.\n\nFrage an das Publikum: Wer hat schon mal mit KI-Tools experimentiert?",
+			"Wichtig: Alle Beispiele heute laufen komplett im Browser – kein Server nötig! Das macht sie perfekt für den Unterrichtseinsatz.\n\nHinweis: Alle Technologien sind Standard-Web-APIs, die in jedem modernen Browser funktionieren.",
+			"Demo-Idee: Zeigen Sie, wie Sie die KI auffordern, den Code zu generieren. Dann die generierte Datei öffnen und das Quiz ausprobieren.\n\nBetonen: Der Code ist direkt lauffähig und kann angepasst werden.\n\nTechnischer Hinweis: localStorage speichert Daten pro Domain und Browser.",
+			"Wichtig: Die Synchronisation funktioniert nur zwischen Tabs desselben Browsers. Perfekt für den Unterricht: Lehrkraft und Schüler:innen können gemeinsam zeichnen.\n\nLive-Demo: Öffnen Sie das Whiteboard in zwei Tabs und zeichnen Sie in beiden gleichzeitig.",
+			"Praxistipp: Lehrkräfte können Karteikarten für ihre Klasse erstellen. Schüler:innen nutzen sie zum Lernen – der Fortschritt wird lokal gespeichert.\n\nCSS-Tipp: Die 3D-Flip-Animation nutzt transform-style: preserve-3d und backface-visibility.",
+			"Betonen: Der KI-generierte Code ist ein STARTpunkt, kein Endprodukt. Wichtig ist, den Code zu verstehen und anzupassen.\n\nDiskussion: Wo sehen Sie Grenzen oder Herausforderungen bei der Nutzung von KI?",
+			"Live-Demo: Zeigen Sie, wie Sie eine einfache HTML-Datei auf GitHub hochladen. Innerhalb von 1-2 Minuten ist die Website online.\n\nTipp: GitHub Pages unterstützt auch benutzerdefinierte Domains.",
+			"Zusammenfassung: KI ist ein mächtiges Werkzeug, das den Einstieg erleichtert. Aber das Verständnis der Technologien bleibt entscheidend.\n\nFragen? Diskussion!\n\nAusblick: In zukünftigen Sessions können wir vertiefende Themen behandeln (z. B. komplexere Synchronisation, IndexedDB, etc.)."
+		];
+
+		const SLIDE_TITLES = [
+			"Titel: KI-gestützte Webentwicklung",
+			"Einführung: Warum KI für Webentwicklung?",
+			"Technologien: Die Bausteine unserer Beispiele",
+			"Beispiel 1: Interaktives Quiz mit localStorage",
+			"Beispiel 2: Kollaboratives Whiteboard mit BroadcastChannel",
+			"Beispiel 3: Digitale Notizkarten mit IndexedDB",
+			"Workflow: Von der Idee zur Website mit KI",
+			"Deployment: Website auf GitHub Pages hosten",
+			"Fazit & Ausblick: Nächste Schritte"
+		];
+
+		document.addEventListener('DOMContentLoaded', function() {
+			const now = new Date();
+			const dateString = now.toLocaleDateString('de-DE', {
+				weekday: 'long',
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric'
+			});
+			document.getElementById('presentationDate').textContent = dateString;
+
+			function updateClock() {
+				const now = new Date();
+				const timeString = now.toLocaleTimeString('de-DE');
+				document.getElementById('currentTime').textContent = timeString;
+			}
+			updateClock();
+			setInterval(updateClock, 1000);
+
+			const urlParams = new URLSearchParams(window.location.search);
+			const isModerator = urlParams.get('moderator') === 'true';
+
+			if (isModerator) {
+				showModeratorView();
+			} else {
+				initPresentation();
+			}
+		});
+
+		function initPresentation() {
+			let deck = new Reveal({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				transition: 'slide',
+				plugins: [ RevealNotes ],
+				showNotes: false,
+				fragments: 'all'
+			});
+
+			const storageKey = 'ki-websites-presentation-slide';
+
+			deck.on('slidechanged', function(event) {
+				const slideIndex = event.indexh;
+				localStorage.setItem(storageKey, slideIndex);
+				localStorage.setItem(storageKey + '-timestamp', Date.now());
+				if (SLIDE_NOTES[slideIndex]) {
+					localStorage.setItem(storageKey + '-notes', SLIDE_NOTES[slideIndex]);
+				}
+				if (SLIDE_TITLES[slideIndex]) {
+					localStorage.setItem(storageKey + '-title', SLIDE_TITLES[slideIndex]);
+				}
+			});
+
+			window.addEventListener('storage', function(e) {
+				if (e.key === storageKey) {
+					const newIndex = parseInt(e.newValue);
+					if (!isNaN(newIndex) && newIndex !== deck.getIndices().h) {
+						deck.slide(newIndex, 0);
+					}
+				}
+			});
+
+			const savedIndex = localStorage.getItem(storageKey);
+			if (savedIndex) {
+				deck.slide(parseInt(savedIndex), 0);
+			}
+
+			const syncHint = document.createElement('div');
+			syncHint.className = 'sync-hint';
+			syncHint.innerHTML = '🔗 Synchronisiert mit Moderator';
+			document.body.appendChild(syncHint);
+
+			const moderatorLink = document.createElement('a');
+			const currentUrl = window.location.href;
+			const separator = currentUrl.includes('?') ? '&' : '?';
+			moderatorLink.href = currentUrl + separator + 'moderator=true';
+			moderatorLink.textContent = '🎤 Moderatorenansicht öffnen';
+			moderatorLink.style.cssText = 'position: fixed; bottom: 20px; left: 20px; background: #4fc3f7; color: #1a1a1a; padding: 10px 15px; border-radius: 20px; text-decoration: none; font-weight: bold; z-index: 100; box-shadow: 0 4px 8px rgba(0,0,0,0.3);';
+			document.body.appendChild(moderatorLink);
+		}
+
+		function showModeratorView() {
+			document.querySelector('.reveal').style.display = 'none';
+			document.getElementById('moderatorView').style.display = 'block';
+
+			const storageKey = 'ki-websites-presentation-slide';
+			const currentSlideEl = document.getElementById('moderatorCurrentSlide');
+			const totalSlidesEl = document.getElementById('moderatorTotalSlides');
+			const slideTitleEl = document.getElementById('moderatorSlideTitle');
+			const notesEl = document.getElementById('moderatorNotes');
+			const syncStatusEl = document.getElementById('syncStatus');
+			const lastUpdateEl = document.getElementById('lastUpdate');
+
+			const totalSlides = document.querySelectorAll('.slides > section').length;
+			totalSlidesEl.textContent = totalSlides;
+
+			function updateModeratorView() {
+				const slideIndex = parseInt(localStorage.getItem(storageKey)) || 0;
+				const notes = localStorage.getItem(storageKey + '-notes') || (SLIDE_NOTES[slideIndex] || '');
+				const title = localStorage.getItem(storageKey + '-title') || (SLIDE_TITLES[slideIndex] || '');
+				const timestamp = localStorage.getItem(storageKey + '-timestamp');
+
+				currentSlideEl.textContent = slideIndex + 1;
+				slideTitleEl.textContent = title;
+				notesEl.value = notes;
+
+				if (timestamp) {
+					const date = new Date(parseInt(timestamp));
+					lastUpdateEl.textContent = date.toLocaleTimeString('de-DE');
+				}
+
+				syncStatusEl.textContent = '✅ Synchronisiert';
+				syncStatusEl.style.color = '#4CAF50';
+			}
+
+			updateModeratorView();
+
+			window.addEventListener('storage', function(e) {
+				if (e.key && e.key.startsWith(storageKey)) {
+					updateModeratorView();
+					syncStatusEl.textContent = '🔄 Aktualisiert';
+					syncStatusEl.style.color = '#FFC107';
+					setTimeout(() => {
+						syncStatusEl.textContent = '✅ Synchronisiert';
+						syncStatusEl.style.color = '#4CAF50';
+					}, 1000);
+				}
+			});
+
+			notesEl.addEventListener('input', function() {
+				const slideIndex = parseInt(localStorage.getItem(storageKey)) || 0;
+				localStorage.setItem(storageKey + '-notes', this.value);
+				localStorage.setItem(storageKey + '-timestamp', Date.now());
+			});
+
+			document.getElementById('moderatorPrev').addEventListener('click', function() {
+				const currentIndex = parseInt(localStorage.getItem(storageKey)) || 0;
+				const newIndex = Math.max(0, currentIndex - 1);
+				localStorage.setItem(storageKey, newIndex);
+				localStorage.setItem(storageKey + '-timestamp', Date.now());
+				updateModeratorView();
+			});
+
+			document.getElementById('moderatorNext').addEventListener('click', function() {
+				const currentIndex = parseInt(localStorage.getItem(storageKey)) || 0;
+				const newIndex = Math.min(totalSlides - 1, currentIndex + 1);
+				localStorage.setItem(storageKey, newIndex);
+				localStorage.setItem(storageKey + '-timestamp', Date.now());
+				updateModeratorView();
+			});
+
+			document.getElementById('moderatorFirst').addEventListener('click', function() {
+				localStorage.setItem(storageKey, 0);
+				localStorage.setItem(storageKey + '-timestamp', Date.now());
+				updateModeratorView();
+			});
+
+			document.getElementById('moderatorLast').addEventListener('click', function() {
+				localStorage.setItem(storageKey, totalSlides - 1);
+				localStorage.setItem(storageKey + '-timestamp', Date.now());
+				updateModeratorView();
+			});
+
+			document.getElementById('moderatorToggleView').addEventListener('click', function() {
+				window.location.href = window.location.href.replace(/[?&]moderator=true/, '')
+					.replace('?&', '?').replace('&&', '&');
+			});
+
+			setInterval(updateModeratorView, 5000);
+		}
+	</script>
+</body>
+</html>
