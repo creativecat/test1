@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Blog | Future Imperfect</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        :root {
+            --primary: #5d8aa8;
+            --primary-dark: #3a6378;
+            --secondary: #87c0cd;
+            --accent: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f5f7fa;
+            --light-gray: #e0e6eb;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            color: #444;
+            background: #fff;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        a:hover { border-color: var(--primary); }
+        
+        strong, b { color: var(--dark); }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        #header {
+            background: var(--dark);
+            color: #fff;
+            padding: 2rem 2rem;
+            text-align: center;
+        }
+        
+        #header h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        #header p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+        
+        #header nav {
+            margin-top: 1.5rem;
+        }
+        
+        #header nav a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+        }
+        
+        #header nav a:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        #main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+        
+        .content > section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .content > aside {
+            flex: 0 0 300px;
+        }
+        
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .post {
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post a.image {
+            display: block;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .post a.image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s;
+        }
+        
+        .post a.image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .post h2 {
+            color: var(--primary);
+        }
+        
+        .post p {
+            margin: 0.5rem 0;
+        }
+        
+        .post .meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .post .actions {
+            margin-top: 1rem;
+        }
+        
+        .post .actions a {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: #fff !important;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        
+        .sidebar {
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .sidebar h3 {
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d0d6db;
+        }
+        
+        .sidebar ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .pagination a, .pagination span {
+            padding: 0.75rem 1.25rem;
+            background: var(--light-gray);
+            border-radius: 4px;
+            color: var(--dark);
+        }
+        
+        .pagination a:hover {
+            background: var(--primary);
+            color: #fff !important;
+        }
+        
+        .pagination .current {
+            background: var(--primary);
+            color: #fff !important;
+        }
+        
+        #footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        #footer a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        @media screen and (max-width: 900px) {
+            .content {
+                flex-direction: column;
+            }
+            .content > aside {
+                flex: 1;
+                order: -1;
+            }
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header id="header">
+            <h1><a href="index.html">Der verrückte Blog</a></h1>
+            <p>Wo die Katzen Piano spielen und die Hunde Steuererklärungen machen</p>
+            <nav>
+                <a href="index.html">Start</a>
+                <a href="about.html">Über Uns</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Kontakt</a>
+            </nav>
+        </header>
+
+        <div id="main">
+            <div class="content">
+                <section class="posts">
+                    <article class="post">
+                        <a href="#" class="image">
+                            <img src="https://picsum.photos/800/400?random=4" alt="Blog Post 1" />
+                        </a>
+                        <h2>Die große Socken-Verschwörung</h2>
+                        <p>Es ist ein Phänomen, das die Menschheit seit Jahrhunderten verwirrt: Wo verschwinden eigentlich alle einzelnen Socken hin? Ich habe eine Theorie entwickelt, die alles erklärt.</p>
+                        <p>Nach monatelanger Forschung (und dem Verlust von 17 einzelnen Socken) bin ich zu dem Schluss gekommen, dass es eine geheime Organisation von Socken gibt, die sich "Die Einzelgänger" nennt. Sie leben hinter dem Trockner, in einer Dimension, die wir nicht sehen können.</p>
+                        <p>Ihre Mission: Uns daran zu erinnern, dass das Universum einen seltsamen Sinn für Humor hat. Jedes Mal, wenn wir eine Socke verlieren, ist das ihr Weg, uns zu sagen: "Hey, denk mal an uns!"</p>
+                        <p>Ich habe versucht, mit ihnen zu verhandeln. Ich habe ihnen neue Socken als Friedensangebot hinterlassen. Aber sie wollen nur eines: dass wir aufhören, sie in den Trockner zu stecken. "Es ist zu heiß", flüsterte eine Socke mir eines Nachts zu. "Und wir haben Angst vor den Tennisbällen."</p>
+                        <div class="meta">
+                            <span>20. Juni 2026</span>
+                            <span>Kategorie: Verschworungstheorien</span>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Weiterlesen</a>
+                        </div>
+                    </article>
+
+                    <article class="post">
+                        <a href="#" class="image">
+                            <img src="https://picsum.photos/800/400?random=5" alt="Blog Post 2" />
+                        </a>
+                        <h2>Wie ich lernte, die Spülmaschine zu lieben</h2>
+                        <p>Es war eine stürmische Beziehung. Am Anfang hasste ich sie. Sie hat meine Lieblingstasse zerbrochen. Sie hat mein bestes Messer stumpf werden lassen. Sie hat meine Teller mit einem seltsamen Film überzogen, den ich nicht abwaschen konnte.</p>
+                        <p>Doch dann, eines Tages, passierte etwas Magisches. Ich kam nach Hause und fand alles blitzblank vor. Kein Abwasch. Kein Geschirrberg. Nur saubere Teller, die darauf warteten, benutzt zu werden.</p>
+                        <p>Ich habe angefangen, ihr kleine Geschenke zu machen. Ich habe ihr spezielles Spülmaschinen-Salz gekauft. Ich habe sie regelmäßig entkalkt. Ich habe sogar angefangen, ihr beim Einräumen zu helfen (okay, das war vielleicht zu viel).</p>
+                        <p>Jetzt ist sie meine beste Freundin. Sie versteht mich. Sie weiß, wann ich einen schlechten Tag hatte und das Geschirr einfach in ihr reinwerfe. Sie sagt nie etwas. Sie macht einfach ihren Job. Und manchmal, wenn ich ganz leise bin, höre ich sie leise summen, als würde sie mir ein Schlaflied singen.</p>
+                        <blockquote>
+                            <p>"Eine Spülmaschine ist wie eine gute Ehe: Man muss sie pflegen, und sie wird einem treu dienen."</p>
+                            <p style="text-align: right; font-style: normal;">- Ich, gerade jetzt</p>
+                        </blockquote>
+                        <div class="meta">
+                            <span>18. Juni 2026</span>
+                            <span>Kategorie: Beziehungen</span>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Weiterlesen</a>
+                        </div>
+                    </article>
+
+                    <article class="post">
+                        <a href="#" class="image">
+                            <img src="https://picsum.photos/800/400?random=6" alt="Blog Post 3" />
+                        </a>
+                        <h2>Die Philosophie des Kühlschrank-Lichts</h2>
+                        <p>Haben Sie sich jemals gefragt, warum das Licht im Kühlschrank ausgeht, wenn man die Tür schließt? Ich schon. Und ich habe eine Theorie.</p>
+                        <p>Das Kühlschrank-Licht ist wie das Universum selbst: Es existiert nur, wenn jemand es beobachtet. Wenn die Tür zu ist, gibt es kein Licht. Es ist nicht so, dass das Licht aus ist - es ist so, dass es einfach nicht existiert.</p>
+                        <p>Das wirft interessante philosophische Fragen auf:</p>
+                        <ul>
+                            <li>Wenn ein Kühlschrank im Wald steht und niemand die Tür öffnet, macht er dann Geräusche?</li>
+                            <li>Wenn ich den Kühlschrank nicht öffne, ist das Essen dann wirklich da?</li>
+                            <li>Und vor allem: Warum geht das Licht nicht aus, wenn ich die Tür offen lasse?</li>
+                        </ul>
+                        <p>Ich habe versucht, diese Fragen mit meinem Kühlschrank zu besprechen. Er hat nicht geantwortet. Aber ich glaube, er denkt darüber nach. Manchmal, wenn ich nachts aufstehe, um einen Snack zu holen, habe ich das Gefühl, dass er mich beobachtet. Als würde er sagen: "Ich weiß, was du tust. Und ich urteile dich."</p>
+                        <div class="meta">
+                            <span>15. Juni 2026</span>
+                            <span>Kategorie: Philosophie</span>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Weiterlesen</a>
+                        </div>
+                    </article>
+
+                    <article class="post">
+                        <a href="#" class="image">
+                            <img src="https://picsum.photos/800/400?random=7" alt="Blog Post 4" />
+                        </a>
+                        <h2>Mein Kampf gegen die Schwerkraft (und ich verliere)</h2>
+                        <p>Die Schwerkraft ist mein Erzfeind. Jedes Mal, wenn ich denke, ich hätte sie besiegt, zieht sie mich wieder nach unten. Gestern habe ich versucht, einen Kuchen zu backen. Der Teig ist auf den Boden gefallen. Die Eier sind auf den Boden gefallen. Ich bin auf den Boden gefallen.</p>
+                        <p>Es ist nicht so, dass ich ungeschickt bin. Es ist so, dass die Schwerkraft gegen mich arbeitet. Sie hat es persönlich auf mich abgesehen. Ich bin mir sicher, dass es eine geheime Absprache zwischen der Schwerkraft und allen Gegenständen in meinem Haus gibt.</p>
+                        <p>Meine Theorien:</p>
+                        <ol>
+                            <li><strong>Die Tassen-Theorie:</strong> Alle Tassen in meinem Haus haben einen Pakt geschlossen. Sie springen absichtlich vom Tisch, wenn ich nicht hinschaue.</li>
+                            <li><strong>Die Schlüssel-Theorie:</strong> Meine Schlüssel verstecken sich absichtlich, wenn ich es eilig habe.</li>
+                            <li><strong>Die Socken-Theorie:</strong> Siehe oben. Die Schwerkraft hilft den Socken bei ihrer Mission.</li>
+                            <li><strong>Die Treppen-Theorie:</strong> Die letzte Stufe existiert nur, um mich zu Fall zu bringen.</li>
+                        </ol>
+                        <p>Ich habe versucht, gegen die Schwerkraft zu kämpfen. Ich habe Yoga gemacht. Ich habe Meditation versucht. Ich habe sogar versucht, positiv zu denken. Nichts hilft. Die Schwerkraft lacht nur über meine Versuche.</p>
+                        <p>Also habe ich beschlossen, mich ihr zu ergeben. Wenn du mich also das nächste Mal auf dem Boden liegend siehst, weißt du: Es ist nicht meine Schuld. Es ist die Schwerkraft. Und sie hat gewonnen.</p>
+                        <div class="meta">
+                            <span>12. Juni 2026</span>
+                            <span>Kategorie: Alltagsabenteuer</span>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Weiterlesen</a>
+                        </div>
+                    </article>
+
+                    <div class="pagination">
+                        <a href="#">&laquo; Ältere Beiträge</a>
+                        <span class="current">1</span>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">Neuere Beiträge &raquo;</a>
+                    </div>
+                </section>
+
+                <aside class="sidebar">
+                    <section>
+                        <h3>Kategorien</h3>
+                        <ul>
+                            <li><a href="#">Alltagsabenteuer (12)</a></li>
+                            <li><a href="#">Verschworungstheorien (8)</a></li>
+                            <li><a href="#">Philosophie (5)</a></li>
+                            <li><a href="#">Beziehungen (3)</a></li>
+                            <li><a href="#">Technologie (7)</a></li>
+                            <li><a href="#">Kulinarisches (4)</a></li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Archiv</h3>
+                        <ul>
+                            <li><a href="#">Juni 2026 (15)</a></li>
+                            <li><a href="#">Mai 2026 (12)</a></li>
+                            <li><a href="#">April 2026 (10)</a></li>
+                            <li><a href="#">März 2026 (8)</a></li>
+                            <li><a href="#">Februar 2026 (14)</a></li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Beliebte Tags</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Humor</a>
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Alltag</a>
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Katzen</a>
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Kaffee</a>
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Prokrastination</a>
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Schwerkraft</a>
+                            <a href="#" style="padding: 0.25rem 0.75rem; background: var(--primary); color: #fff; border-radius: 4px; font-size: 0.8rem;">Socken</a>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <p>&copy; 2026 Der verrückte Blog. Alle Rechte vorbehalten. Oder auch nicht. Wer liest das schon?</p>
+            <p>Design: <a href="https://html5up.net/future-imperfect">Future Imperfect</a> (aber mit mehr Wahnsinn)</p>
+        </footer>
+    </div>
+</body>
+</html>

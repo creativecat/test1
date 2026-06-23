@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funktionen | RoboterTech</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #7c3aed;
+            --accent: #10b981;
+            --dark: #111827;
+            --dark-soft: #1f2937;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+        
+        .header.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(17, 24, 39, 0.98);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        
+        .logo span { color: var(--primary); }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--white);
+        }
+        
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            transition: var(--transition);
+        }
+        
+        .hero-section {
+            height: 100vh;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(17, 24, 39, 0.7);
+            z-index: 1;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .slide-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .slide-content p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            margin-left: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--dark);
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 2;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .slider-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+        
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .slider-arrow.prev { left: 2rem; }
+        .slider-arrow.next { right: 2rem; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-light {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .section-dark {
+            background: var(--dark-soft);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .feature-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-image {
+            width: 100%;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .feature-text h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .feature-text p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--dark);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .section-light .feature-card {
+            background: var(--white);
+            color: var(--dark);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .feature-card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+        }
+        
+        .pricing-section {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: var(--white);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-period {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .pricing-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .footer {
+            background: var(--dark);
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--primary-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hamburger { display: flex; }
+            .slide-content h1 { font-size: 2rem; }
+            .slide-content p { font-size: 1rem; }
+            .slider-nav { bottom: 1rem; }
+            .slider-arrow { width: 40px; height: 40px; font-size: 1.25rem; }
+            .slider-arrow.prev { left: 1rem; }
+            .slider-arrow.next { right: 1rem; }
+            .feature-details { grid-template-columns: 1fr; }
+            .section-title h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="nav-container">
+            <div class="logo">Roboter<span>Tech</span></div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Start</a></li>
+                    <li><a href="features.html" class="active">Funktionen</a></li>
+                    <li><a href="technologies.html">Technologien</a></li>
+                    <li><a href="about.html">Über uns</a></li>
+                    <li><a href="contact.html">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero-section">
+        <div class="slider" id="slider">
+            <div class="slide active" style="background-image: url('https://picsum.photos/1920/1080?random=20');">
+                <div class="slide-content">
+                    <h1>Leistungsstarke Funktionen</h1>
+                    <p>Entdecken Sie die vielfältigen Möglichkeiten unserer Robotertechnologie. Präzision, Intelligenz und Effizienz in jedem Detail.</p>
+                    <a href="#features" class="btn">Alle Funktionen ansehen</a>
+                    <a href="contact.html" class="btn btn-outline">Kontakt aufnehmen</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://picsum.photos/1920/1080?random=21');">
+                <div class="slide-content">
+                    <h1>Intelligente Lösungen</h1>
+                    <p>Unsere Funktionen sind darauf ausgelegt, Ihre Arbeitsprozesse zu optimieren und neue Möglichkeiten zu eröffnen.</p>
+                    <a href="#features" class="btn">Mehr erfahren</a>
+                    <a href="technologies.html" class="btn btn-outline">Technologien entdecken</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://picsum.photos/1920/1080?random=22');">
+                <div class="slide-content">
+                    <h1>Zukunftssicherheit</h1>
+                    <p>Mit unserer Technologie sind Sie für die Herausforderungen von morgen bestens gerüstet.</p>
+                    <a href="#pricing" class="btn">Preise anzeigen</a>
+                    <a href="about.html" class="btn btn-outline">Über uns</a>
+                </div>
+            </div>
+            <div class="slider-nav" id="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+            <button class="slider-arrow prev" id="prev-btn">❮</button>
+            <button class="slider-arrow next" id="next-btn">❯</button>
+        </div>
+    </section>
+    
+    <section class="section section-light" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unsere Funktionen im Detail</h2>
+                <p>Entdecken Sie die leistungsstarken Funktionen, die unsere Robotertechnologie einzigartig machen</p>
+            </div>
+            
+            <div class="feature-details">
+                <div class="feature-text">
+                    <h3>Künstliche Intelligenz & Machine Learning</h3>
+                    <p>Unsere Roboter nutzen fortschrittliche KI-Algorithmen, um aus Erfahrungen zu lernen und sich kontinuierlich zu verbessern. Dies ermöglicht eine intelligente Entscheidungsfindung in Echtzeit und eine Anpassung an neue Situationen.</p>
+                    <p>Die Technologie kann Muster erkennen, Vorhersagen treffen und komplexe Aufgaben autonom lösen. Durch maschinelles Lernen werden die Roboter mit jeder ausgeführten Aufgabe intelligenter.</p>
+                    <a href="#" class="btn">Mehr erfahren</a>
+                </div>
+                <div>
+                    <img src="https://picsum.photos/600/400?random=23" alt="KI & Machine Learning" class="feature-image">
+                </div>
+            </div>
+            
+            <div class="feature-details">
+                <div>
+                    <img src="https://picsum.photos/600/400?random=24" alt="Echtzeit-Verarbeitung" class="feature-image">
+                </div>
+                <div class="feature-text">
+                    <h3>Echtzeit-Datenverarbeitung</h3>
+                    <p>Mit unserer Hochgeschwindigkeits-Datenverarbeitung können unsere Roboter in Millisekunden auf Veränderungen reagieren. Dies ist besonders wichtig für Anwendungen, bei denen Präzision und Schnelligkeit entscheidend sind.</p>
+                    <p>Die Echtzeit-Verarbeitung ermöglicht es den Robotern, komplexe Berechnungen durchzuführen, während sie sich bewegen, was zu einer nahtlosen und effizienten Ausführung von Aufgaben führt.</p>
+                    <a href="#" class="btn">Technische Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Alle Funktionen</h2>
+                <p>Eine Übersicht über alle unsere leistungsstarken Funktionen</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-card-icon">🤖</div>
+                    <h3>Autonome Navigation</h3>
+                    <p>Intelligente Pfadplanung und Hindernisvermeidung für eine sichere und effiziente Bewegung in jeder Umgebung.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🎯</div>
+                    <h3>Präzisionssteuerung</h3>
+                    <p>Millimetergenaue Steuerung für Aufgaben, die höchste Genauigkeit erfordern, wie z.B. Montage oder Chirurgie.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🔄</div>
+                    <h3>Adaptive Anpassung</h3>
+                    <p>Automatische Anpassung an veränderte Bedingungen und Anforderungen ohne manuelles Eingreifen.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">📡</div>
+                    <h3>Fernüberwachung</h3>
+                    <p>Echtzeit-Überwachung und Steuerung aus der Ferne über eine sichere Internetverbindung.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🔋</div>
+                    <h3>Energiemanagement</h3>
+                    <p>Intelligentes Energiemanagement für maximale Laufzeit und effizienten Energieverbrauch.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-card-icon">🛡️</div>
+                    <h3>Sicherheitsprotokolle</h3>
+                    <p>Umfassende Sicherheitsmaßnahmen zum Schutz von Menschen, Daten und Geräten.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section pricing-section" id="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unsere Pakete</h2>
+                <p>Wählen Sie das Paket, das am besten zu Ihren Anforderungen passt</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic</h3>
+                    <div class="price">€2.999</div>
+                    <div class="price-period">/ Monat</div>
+                    <ul class="pricing-features">
+                        <li>1 Roboter-Einheit</li>
+                        <li>Grundlegende Funktionen</li>
+                        <li>Standard-Support</li>
+                        <li>1 Jahr Garantie</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Anfrage stellen</a>
+                </div>
+                <div class="pricing-card popular">
+                    <h3>Professional</h3>
+                    <div class="price">€5.999</div>
+                    <div class="price-period">/ Monat</div>
+                    <ul class="pricing-features">
+                        <li>2 Roboter-Einheiten</li>
+                        <li>Alle Funktionen</li>
+                        <li>Prioritäts-Support</li>
+                        <li>2 Jahre Garantie</li>
+                        <li>Schulung inklusive</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Anfrage stellen</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <div class="price">€9.999</div>
+                    <div class="price-period">/ Monat</div>
+                    <ul class="pricing-features">
+                        <li>Unbegrenzte Einheiten</li>
+                        <li>Alle Funktionen</li>
+                        <li>24/7 Premium-Support</li>
+                        <li>3 Jahre Garantie</li>
+                        <li>Individuelle Anpassungen</li>
+                        <li>Dedizierter Account Manager</li>
+                    </ul>
+                    <a href="contact.html" class="btn">Anfrage stellen</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Bereit für den nächsten Schritt?</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">Kontaktieren Sie uns und erfahren Sie, wie unsere Funktionen Ihr Unternehmen transformieren können.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="contact.html" class="btn">Jetzt Kontakt aufnehmen</a>
+                <a href="index.html" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>RoboterTech</h3>
+                    <p>Innovative Lösungen für eine intelligente Zukunft.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Start</a></li>
+                        <li><a href="features.html" class="active">Funktionen</a></li>
+                        <li><a href="technologies.html">Technologien</a></li>
+                        <li><a href="about.html">Über uns</a></li>
+                        <li><a href="contact.html">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Dienstleistungen</h3>
+                    <ul>
+                        <li><a href="#">Beratung</a></li>
+                        <li><a href="#">Implementierung</a></li>
+                        <li><a href="#">Schulung</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Kontakt</h3>
+                    <ul>
+                        <li><a href="tel:+49123456789">+49 123 456789</a></li>
+                        <li><a href="mailto:info@robotertech.de">info@robotertech.de</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 RoboterTech. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <button class="scroll-top" id="scroll-top">↑</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('slider');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            let currentSlide = 0;
+            let slideInterval;
+            
+            function initSlider() {
+                showSlide(currentSlide);
+                startAutoSlide();
+            }
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function startAutoSlide() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            function stopAutoSlide() {
+                clearInterval(slideInterval);
+            }
+            
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopAutoSlide();
+                startAutoSlide();
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopAutoSlide();
+                startAutoSlide();
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    stopAutoSlide();
+                    startAutoSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    stopAutoSlide();
+                    startAutoSlide();
+                }
+            });
+            
+            initSlider();
+            slider.addEventListener('mouseenter', stopAutoSlide);
+            slider.addEventListener('mouseleave', startAutoSlide);
+            
+            const header = document.getElementById('header');
+            const scrollTopBtn = document.getElementById('scroll-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+                
+                if (window.scrollY > 300) scrollTopBtn.classList.add('visible');
+                else scrollTopBtn.classList.remove('visible');
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.feature-card, .feature-details, .pricing-card');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    if (elementPosition < windowHeight * 0.85) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            document.querySelectorAll('.feature-card, .feature-details, .pricing-card').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            });
+            
+            window.addEventListener('scroll', animateOnScroll);
+            window.addEventListener('load', animateOnScroll);
+            animateOnScroll();
+        });
+    </script>
+</body>
+</html>

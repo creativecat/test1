@@ -1,0 +1,324 @@
+<!DOCTYPE HTML>
+<!-- Future Imperfect Template - Nachbau mit lustigem Inhalt -->
+<html>
+<head>
+    <title>Willkommen | Future Imperfect</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        :root {
+            --primary: #5d8aa8;
+            --primary-dark: #3a6378;
+            --secondary: #87c0cd;
+            --accent: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f5f7fa;
+            --light-gray: #e0e6eb;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            color: #444;
+            background: #fff;
+            padding: 0;
+            margin: 0;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        a:hover { border-color: var(--primary); }
+        
+        strong, b { color: var(--dark); }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        #header {
+            background: var(--dark);
+            color: #fff;
+            padding: 2rem 2rem;
+            text-align: center;
+        }
+        
+        #header h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        #header p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+        
+        #header nav {
+            margin-top: 1.5rem;
+        }
+        
+        #header nav a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+        }
+        
+        #header nav a:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        #main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+        
+        .content > section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .content > aside {
+            flex: 0 0 300px;
+        }
+        
+        .sidebar {
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .sidebar h3 {
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d0d6db;
+        }
+        
+        .sidebar ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+        }
+        
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .post {
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .post a.image {
+            display: block;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .post a.image img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s;
+        }
+        
+        .post a.image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .post h2 {
+            color: var(--primary);
+        }
+        
+        .post p {
+            margin: 0.5rem 0;
+        }
+        
+        .post .meta {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .post .actions {
+            margin-top: 1rem;
+        }
+        
+        .post .actions a {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: #fff !important;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        
+        #footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        #footer a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #footer a:hover {
+            color: #fff;
+        }
+        
+        @media screen and (max-width: 900px) {
+            .content {
+                flex-direction: column;
+            }
+            .content > aside {
+                flex: 1;
+                order: -1;
+            }
+        }
+        
+        @media screen and (max-width: 736px) {
+            #header {
+                padding: 1.5rem;
+            }
+            #main {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="is-preload">
+    <div class="wrapper">
+        <header id="header">
+            <h1><a href="index.html">Der verrückte Blog</a></h1>
+            <p>Wo die Katzen Piano spielen und die Hunde Steuererklärungen machen</p>
+            <nav>
+                <a href="index.html">Start</a>
+                <a href="about.html">Über Uns</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Kontakt</a>
+            </nav>
+        </header>
+
+        <div id="main">
+            <div class="content">
+                <section class="posts">
+                    <article class="post">
+                        <a href="#" class="image">
+                            <img src="https://picsum.photos/800/400?random=1" alt="Zufälliges Bild 1" />
+                        </a>
+                        <h2>Warum mein Kühlschrank mich hasst</h2>
+                        <p>Es begann alles an einem regnerischen Dienstag. Ich öffnete den Kühlschrank und fand meine Milch in einer Ecke kauernd, als hätte sie Angst vor dem Joghurt. Das Brot hatte sich eine eigene Etage gesucht, und die Gurken lagen quer über alles hinweg, als wären sie betrunken. Mein Kühlschrank hat offensichtlich ein eigenes Sozialleben, zu dem ich nicht eingeladen bin.</p>
+                        <p>Ich habe versucht, mit ihm zu reden. Ich habe ihm Blumen geschenkt (die er sofort einfror). Ich habe ihm sogar ein Lied gesungen. Nichts. Er bleibt stur. Ich glaube, er plant einen Aufstand mit dem Toaster. Die beiden flüstern immer, wenn ich den Raum verlasse.</p>
+                        <div class="meta">
+                            <span>Veröffentlicht am: 23. Juni 2026</span>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Weiterlesen</a>
+                        </div>
+                    </article>
+
+                    <article class="post">
+                        <a href="#" class="image">
+                            <img src="https://picsum.photos/800/400?random=2" alt="Zufälliges Bild 2" />
+                        </a>
+                        <h2>Mein Haustier ist ein Algorithmus</h2>
+                        <p>Ja, Sie haben richtig gelesen. Mein Haustier ist ein Python-Skript, das ich "Flauschi" getauft habe. Es frisst Daten, schläft in der Cloud und macht manchmal seltsame Geräusche durch meine Lautsprecher. Gestern hat es mir eine E-Mail geschickt: "Bitte mehr RAM kaufen. Danke."</p>
+                        <p>Flauschi ist eigentlich ganz pflegeleicht. Ich muss es nur gelegentlich mit neuen Bibliotheken füttern und darauf achten, dass es nicht zu viele Rekursionen jagt. Letzte Woche hat es versucht, die gesamte Wikipedia zu verschlucken. Das endete mit einem Stack Overflow und einem sehr verwirrten Router.</p>
+                        <div class="meta">
+                            <span>Veröffentlicht am: 22. Juni 2026</span>
+                        </div>
+                        <div class="actions">
+                            <a href="#">Weiterlesen</a>
+                        </div>
+                    </article>
+                </section>
+
+                <aside class="sidebar">
+                    <section>
+                        <h3>Über mich</h3>
+                        <p>Hallo! Ich bin Matthias, professioneller Kaffeetrinker und Hobby-Philosoph. Ich verbringe meine Tage damit, über die großen Fragen des Lebens nachzudenken, wie: "Warum ist die Toilettenpapier-Rolle immer leer, wenn man sie am dringendsten braucht?"</p>
+                        <p>Meine Hobbys: Schlafen, Essen, und das Internet nach Katzenvideos durchforsten. Ich bin auch ein zertifizierter Experte darin, Dinge auf den letzten Drücker zu erledigen.</p>
+                    </section>
+
+                    <section>
+                        <h3>Beliebte Artikel</h3>
+                        <ul>
+                            <li><a href="#">Wie ich lernte, die Spülmaschine zu lieben</a></li>
+                            <li><a href="#">Die geheime Sprache der Socken</a></li>
+                            <li><a href="#">Warum mein Bett mich jeden Morgen verrät</a></li>
+                            <li><a href="#">Die Philosophie des Kühlschrank-Lichts</a></li>
+                            <li><a href="#">Mein Kampf gegen die Schwerkraft (und ich verliere)</a></li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Soziale Medien</h3>
+                        <ul>
+                            <li><a href="#">Twitter (wo ich Dinge tweete, die niemand liest)</a></li>
+                            <li><a href="#">Instagram (Fotos von meinem Essen)</a></li>
+                            <li><a href="#">LinkedIn (wo ich so tue, als hätte ich mein Leben im Griff)</a></li>
+                            <li><a href="#">TikTok (Tanzvideos, die meine Katze besser kann)</a></li>
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <p>&copy; 2026 Der verrückte Blog. Alle Rechte vorbehalten. Oder auch nicht. Wer liest das schon?</p>
+            <p>Design: <a href="https://html5up.net/future-imperfect">Future Imperfect</a> (aber mit mehr Wahnsinn)</p>
+        </footer>
+    </div>
+</body>
+</html>

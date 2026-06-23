@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Über uns | RoboterTech</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #7c3aed;
+            --accent: #10b981;
+            --dark: #111827;
+            --dark-soft: #1f2937;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+        
+        .header.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(17, 24, 39, 0.98);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        
+        .logo span { color: var(--primary); }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--white);
+        }
+        
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            transition: var(--transition);
+        }
+        
+        .hero-section {
+            height: 100vh;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(17, 24, 39, 0.7);
+            z-index: 1;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .slide-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .slide-content p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            margin-left: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--dark);
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 2;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .slider-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+        
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .slider-arrow.prev { left: 2rem; }
+        .slider-arrow.next { right: 2rem; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-light {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .section-dark {
+            background: var(--dark-soft);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .about-image {
+            width: 100%;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .about-text h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .about-text p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--dark-soft);
+        }
+        
+        .timeline-year {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-description {
+            color: var(--gray);
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .team-card {
+            background: var(--dark);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .section-light .team-card {
+            background: var(--white);
+            color: var(--dark);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+        
+        .team-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .team-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .team-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-info p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-item {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+        
+        .partners-section {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .partner-logo {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+        
+        .partner-logo:hover {
+            opacity: 1;
+        }
+        
+        .footer {
+            background: var(--dark);
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--primary-dark);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hamburger { display: flex; }
+            .slide-content h1 { font-size: 2rem; }
+            .slide-content p { font-size: 1rem; }
+            .slider-nav { bottom: 1rem; }
+            .slider-arrow { width: 40px; height: 40px; font-size: 1.25rem; }
+            .slider-arrow.prev { left: 1rem; }
+            .slider-arrow.next { right: 1rem; }
+            .about-content { grid-template-columns: 1fr; }
+            .section-title h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="nav-container">
+            <div class="logo">Roboter<span>Tech</span></div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Start</a></li>
+                    <li><a href="features.html">Funktionen</a></li>
+                    <li><a href="technologies.html">Technologien</a></li>
+                    <li><a href="about.html" class="active">Über uns</a></li>
+                    <li><a href="contact.html">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero-section">
+        <div class="slider" id="slider">
+            <div class="slide active" style="background-image: url('https://picsum.photos/1920/1080?random=40');">
+                <div class="slide-content">
+                    <h1>Wer wir sind</h1>
+                    <p>Erfahren Sie mehr über unser Unternehmen, unsere Werte und unser Team. Wir sind leidenschaftlich dabei, die Zukunft der Robotertechnologie zu gestalten.</p>
+                    <a href="#story" class="btn">Unsere Geschichte</a>
+                    <a href="#team" class="btn btn-outline">Unser Team</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://picsum.photos/1920/1080?random=41');">
+                <div class="slide-content">
+                    <h1>Unsere Mission</h1>
+                    <p>Wir streben danach, Technologie nutzbarer, zugänglicher und effizienter zu machen. Unsere Vision ist eine Welt, in der Mensch und Maschine harmonisch zusammenarbeiten.</p>
+                    <a href="#mission" class="btn">Mehr erfahren</a>
+                    <a href="contact.html" class="btn btn-outline">Kontakt aufnehmen</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://picsum.photos/1920/1080?random=42');">
+                <div class="slide-content">
+                    <h1>Unsere Werte</h1>
+                    <p>Innovation, Qualität und Kundenzufriedenheit sind die Säulen unseres Erfolgs. Erfahren Sie, was uns antreibt.</p>
+                    <a href="#values" class="btn">Unsere Werte</a>
+                    <a href="#stats" class="btn btn-outline">Fakten & Zahlen</a>
+                </div>
+            </div>
+            <div class="slider-nav" id="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+            <button class="slider-arrow prev" id="prev-btn">❮</button>
+            <button class="slider-arrow next" id="next-btn">❯</button>
+        </div>
+    </section>
+    
+    <section class="section section-light" id="story">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unsere Geschichte</h2>
+                <p>Von bescheidenen Anfängen zu einem führenden Unternehmen in der Robotertechnologie</p>
+            </div>
+            
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Bescheidene Anfänge</h3>
+                    <p>Unser Unternehmen wurde 2010 von einer Gruppe leidenschaftlicher Ingenieure und Technologie-Enthusiasten gegründet. Was als kleines Startup in einer Garage begann, hat sich zu einem der führenden Unternehmen in der Robotertechnologie entwickelt.</p>
+                    <p>In den ersten Jahren konzentrierten wir uns auf die Entwicklung von Prototypen und die Erkundung neuer Technologien. Unsere ersten Erfolge kamen mit der Einführung unserer ersten kommerziellen Roboterlösung im Jahr 2012.</p>
+                    <a href="#" class="btn">Mehr über unsere Geschichte</a>
+                </div>
+                <div>
+                    <img src="https://picsum.photos/600/400?random=43" alt="Gründungszeit" class="about-image">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section section-dark" id="mission">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unsere Mission & Vision</h2>
+                <p>Was uns antreibt und wohin wir streben</p>
+            </div>
+            
+            <div class="about-content">
+                <div>
+                    <img src="https://picsum.photos/600/400?random=44" alt="Mission" class="about-image">
+                </div>
+                <div class="about-text">
+                    <h3>Unsere Mission</h3>
+                    <p>Unsere Mission ist es, innovative Robotertechnologien zu entwickeln, die Unternehmen dabei unterstützen, effizienter, präziser und nachhaltiger zu arbeiten. Wir wollen die Art und Weise, wie Menschen mit Technologie interagieren, neu definieren.</p>
+                    
+                    <h3 style="margin-top: 2rem;">Unsere Vision</h3>
+                    <p>Wir streben eine Zukunft an, in der Robotertechnologie allgegenwärtig und für jeden zugänglich ist. Eine Welt, in der Mensch und Maschine nahtlos zusammenarbeiten, um komplexe Probleme zu lösen und neue Möglichkeiten zu schaffen.</p>
+                    
+                    <a href="contact.html" class="btn">Mit uns in Kontakt treten</a>
+                </div>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2010</div>
+                    <div class="timeline-title">Gründung</div>
+                    <div class="timeline-description">RoboterTech wird von einer Gruppe von Ingenieuren gegründet.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2012</div>
+                    <div class="timeline-title">Erster kommerzieller Roboter</div>
+                    <div class="timeline-description">Einführung unserer ersten kommerziellen Roboterlösung.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2015</div>
+                    <div class="timeline-title">Expansion</div>
+                    <div class="timeline-description">Eröffnung unseres ersten internationalen Büros.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2018</div>
+                    <div class="timeline-title">KI-Integration</div>
+                    <div class="timeline-description">Integration von künstlicher Intelligenz in unsere Roboter.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2021</div>
+                    <div class="timeline-title">Industrie 4.0</div>
+                    <div class="timeline-description">Führend in der Industrie 4.0 Revolution mit smarten Fabriken.</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-title">Autonome Systeme</div>
+                    <div class="timeline-description">Einführung vollständig autonomer Roboterlösungen.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section section-light" id="values">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unsere Werte</h2>
+                <p>Die Prinzipien, die unser Handeln leiten</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=45'); background-color: #f0f0f0;"></div>
+                    <div class="team-info">
+                        <h3>💡 Innovation</h3>
+                        <p>Wir streben danach, die Grenzen des Möglichen zu erweitern und neue Lösungen für komplexe Probleme zu finden.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=46'); background-color: #f0f0f0;"></div>
+                    <div class="team-info">
+                        <h3>⭐ Qualität</h3>
+                        <p>Wir setzen auf höchste Qualität in allem, was wir tun - von der Entwicklung bis zum Kundenservice.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=47'); background-color: #f0f0f0;"></div>
+                    <div class="team-info">
+                        <h3>🤝 Kundenzufriedenheit</h3>
+                        <p>Unsere Kunden stehen im Mittelpunkt. Ihre Zufriedenheit ist unser größter Erfolg.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=48'); background-color: #f0f0f0;"></div>
+                    <div class="team-info">
+                        <h3>🌍 Nachhaltigkeit</h3>
+                        <p>Wir entwickeln Lösungen, die nicht nur effizient, sondern auch umweltfreundlich sind.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section section-dark" id="team">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unser Team</h2>
+                <p>Die Menschen hinter RoboterTech</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=49');"></div>
+                    <div class="team-info">
+                        <h3>Dr. Anna Müller</h3>
+                        <p>CEO & Gründerin</p>
+                        <div class="social-links">
+                            <a href="#">📧</a>
+                            <a href="#">💼</a>
+                            <a href="#">🐦</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=50');"></div>
+                    <div class="team-info">
+                        <h3>Markus Schmidt</h3>
+                        <p>CTO</p>
+                        <div class="social-links">
+                            <a href="#">📧</a>
+                            <a href="#">💼</a>
+                            <a href="#">🐦</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=51');"></div>
+                    <div class="team-info">
+                        <h3>Sarah Bauer</h3>
+                        <p>Leiterin F&E</p>
+                        <div class="social-links">
+                            <a href="#">📧</a>
+                            <a href="#">💼</a>
+                            <a href="#">🐦</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-image" style="background-image: url('https://picsum.photos/400/300?random=52');"></div>
+                    <div class="team-info">
+                        <h3>Thomas Weber</h3>
+                        <p>Leiter Vertrieb</p>
+                        <div class="social-links">
+                            <a href="#">📧</a>
+                            <a href="#">💼</a>
+                            <a href="#">🐦</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section section-light" id="stats">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fakten & Zahlen</h2>
+                <p>Einige beeindruckende Zahlen über RoboterTech</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Jahre Erfahrung</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Zufriedene Kunden</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2500+</div>
+                    <div class="stat-label">Installierte Einheiten</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Patente</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Länder</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">Kundenzufriedenheit</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section partners-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unsere Partner</h2>
+                <p>Zusammenarbeit mit führenden Unternehmen und Institutionen</p>
+            </div>
+            
+            <div class="partners-grid">
+                <div class="partner-logo">🏢 TechCorp</div>
+                <div class="partner-logo">🏭 IndustrySolutions</div>
+                <div class="partner-logo">🎓 MIT Research</div>
+                <div class="partner-logo">🌍 GlobalTech</div>
+                <div class="partner-logo">⚡ InnovationLab</div>
+                <div class="partner-logo">🏗️ BuildFuture</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Bereit, Teil unserer Geschichte zu werden?</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">Treten Sie unserem Team bei oder werden Sie unser Partner.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="contact.html" class="btn">Jetzt Kontakt aufnehmen</a>
+                <a href="index.html" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>RoboterTech</h3>
+                    <p>Innovative Lösungen für eine intelligente Zukunft.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Start</a></li>
+                        <li><a href="features.html">Funktionen</a></li>
+                        <li><a href="technologies.html">Technologien</a></li>
+                        <li><a href="about.html" class="active">Über uns</a></li>
+                        <li><a href="contact.html">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Unternehmen</h3>
+                    <ul>
+                        <li><a href="#story">Geschichte</a></li>
+                        <li><a href="#team">Team</a></li>
+                        <li><a href="#values">Werte</a></li>
+                        <li><a href="#">Karriere</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Kontakt</h3>
+                    <ul>
+                        <li><a href="tel:+49123456789">+49 123 456789</a></li>
+                        <li><a href="mailto:info@robotertech.de">info@robotertech.de</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 RoboterTech. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <button class="scroll-top" id="scroll-top">↑</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slider = document.getElementById('slider');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            let currentSlide = 0;
+            let slideInterval;
+            
+            function initSlider() {
+                showSlide(currentSlide);
+                startAutoSlide();
+            }
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function startAutoSlide() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            function stopAutoSlide() {
+                clearInterval(slideInterval);
+            }
+            
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopAutoSlide();
+                startAutoSlide();
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopAutoSlide();
+                startAutoSlide();
+            });
+            
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextSlide();
+                    stopAutoSlide();
+                    startAutoSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    prevSlide();
+                    stopAutoSlide();
+                    startAutoSlide();
+                }
+            });
+            
+            initSlider();
+            slider.addEventListener('mouseenter', stopAutoSlide);
+            slider.addEventListener('mouseleave', startAutoSlide);
+            
+            const header = document.getElementById('header');
+            const scrollTopBtn = document.getElementById('scroll-top');
+            
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+                
+                if (window.scrollY > 300) scrollTopBtn.classList.add('visible');
+                else scrollTopBtn.classList.remove('visible');
+            });
+            
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.about-content, .timeline-item, .team-card, .stat-item, .partner-logo');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    if (elementPosition < windowHeight * 0.85) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            document.querySelectorAll('.about-content, .timeline-item, .team-card, .stat-item, .partner-logo').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            });
+            
+            window.addEventListener('scroll', animateOnScroll);
+            window.addEventListener('load', animateOnScroll);
+            animateOnScroll();
+        });
+    </script>
+</body>
+</html>

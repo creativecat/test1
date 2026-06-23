@@ -1,0 +1,317 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Über Uns | Future Imperfect</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        :root {
+            --primary: #5d8aa8;
+            --primary-dark: #3a6378;
+            --secondary: #87c0cd;
+            --accent: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f5f7fa;
+            --light-gray: #e0e6eb;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            color: #444;
+            background: #fff;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        a:hover { border-color: var(--primary); }
+        
+        strong, b { color: var(--dark); }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        #header {
+            background: var(--dark);
+            color: #fff;
+            padding: 2rem 2rem;
+            text-align: center;
+        }
+        
+        #header h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        #header p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+        
+        #header nav {
+            margin-top: 1.5rem;
+        }
+        
+        #header nav a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+        }
+        
+        #header nav a:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        #main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+        
+        .content > section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .content > aside {
+            flex: 0 0 300px;
+        }
+        
+        .sidebar {
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .sidebar h3 {
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d0d6db;
+        }
+        
+        .sidebar ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+        }
+        
+        .post {
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .post a.image {
+            display: block;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .post a.image img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .post h2 {
+            color: var(--primary);
+        }
+        
+        .image.featured {
+            display: block;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .image.featured img {
+            width: 100%;
+            height: auto;
+        }
+        
+        #footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        #footer a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        @media screen and (max-width: 900px) {
+            .content {
+                flex-direction: column;
+            }
+            .content > aside {
+                flex: 1;
+                order: -1;
+            }
+        }
+        
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header id="header">
+            <h1><a href="index.html">Der verrückte Blog</a></h1>
+            <p>Wo die Katzen Piano spielen und die Hunde Steuererklärungen machen</p>
+            <nav>
+                <a href="index.html">Start</a>
+                <a href="about.html">Über Uns</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Kontakt</a>
+            </nav>
+        </header>
+
+        <div id="main">
+            <div class="content">
+                <section>
+                    <a href="#" class="image featured">
+                        <img src="https://picsum.photos/1200/400?random=3" alt="Über uns Banner" />
+                    </a>
+                    
+                    <div class="post">
+                        <h2>Wer sind wir eigentlich?</h2>
+                        <p>Gute Frage! Wir sind ein Team von hochqualifizierten Träumer*innen, professionellen Prokrastinator*innen und zertifizierten Kaffeekocher*innen. Unsere Mission: Die Welt mit sinnlosem Wissen und unnützen Fakten zu füllen.</p>
+                        
+                        <h3>Unser Gründer: Matthias</h3>
+                        <p>Matthias, unser furchtloser Anführer, hat den Blog gegründet, nachdem er eines Tages feststellte, dass sein Leben zu sinnvoll war. "Ich brauche mehr Chaos", sagte er sich und kaufte einen Domain-Namen. Der Rest ist, nun ja, chaotische Geschichte.</p>
+                        
+                        <p>Matthias' Qualifikationen:</p>
+                        <ul>
+                            <li>Kann einen Toastbrot-Toast in unter 30 Sekunden verbrennen</li>
+                            <li>Hat einmal einen ganzen Tag damit verbracht, Socken zu sortieren (er hat aufgegeben)</li>
+                            <li>Spricht fließend "Katzen" und "Hund"</li>
+                            <li>Experte für das Finden von Dingen, die nicht da sind</li>
+                            <li>Besitzt mehr T-Shirts mit spruchreifem Aufdruck als Unterwäsche</li>
+                        </ul>
+                        
+                        <h3>Unser Team</h3>
+                        <p><strong>Klaus, der Kühlschrank:</strong> Unser inoffizieller Büroleiter. Er entscheidet, was gegessen wird (meistens er selbst). Klaus hat eine starke Abneigung gegen Montage und leere Milchpackungen.</p>
+                        
+                        <p><strong>Frau Schmidt, die Kaffeemaschine:</strong> Ohne sie wäre nichts möglich. Sie arbeitet 24/7 und verlangt nur gelegentlich eine Reinigung. Frau Schmidt hat mehr Energie als wir alle zusammen.</p>
+                        
+                        <p><strong>Herrchen, der Hund:</strong> Unser Chief Happiness Officer. Seine Hauptaufgabe besteht darin, während wichtiger Meetings zu schnarchen und uns daran zu erinnern, dass Pausen wichtig sind.</p>
+                        
+                        <p><strong>Sir Flauschington III, die Katze:</strong> Unser Creative Director. Er schläft 23 Stunden am Tag und hat in der verbleibenden Stunde alle Design-Entscheidungen getroffen. Seine Lieblingsfarbe ist "unsichtbar".</p>
+                        
+                        <h3>Unsere Philosophie</h3>
+                        <p>Wir glauben daran, dass das Leben zu kurz ist, um es ernst zu nehmen. Deshalb nehmen wir alles mit einer Prise Salz, einer Tasse Kaffee und einer großen Portion Humor.</p>
+                        
+                        <blockquote>
+                            <p>"Wenn das Leben dir Zitronen gibt, wirf sie zurück und verlange Schokolade."</p>
+                            <p style="text-align: right; font-style: italic;">- Unser Team-Motto</p>
+                        </blockquote>
+                        
+                        <p>Unsere Werte:</p>
+                        <ul>
+                            <li><strong>Authentizität:</strong> Wir sind genau so chaotisch, wie wir aussehen.</li>
+                            <li><strong>Transparenz:</strong> Wir verstecken nichts - außer die letzte Scheibe Pizza.</li>
+                            <li><strong>Innovation:</strong> Wir erfinden ständig neue Ausreden, warum wir etwas nicht gemacht haben.</li>
+                            <li><strong>Nachhaltigkeit:</strong> Wir recyceln - vor allem alte Witze.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <aside class="sidebar">
+                    <section>
+                        <h3>Schnellnavigation</h3>
+                        <ul>
+                            <li><a href="#team">Unser Team</a></li>
+                            <li><a href="#philosophie">Philosophie</a></li>
+                            <li><a href="#geschichte">Unsere Geschichte</a></li>
+                            <li><a href="#fakten">Unnütze Fakten</a></li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Unnütze Fakten</h3>
+                        <p>Wussten Sie schon?</p>
+                        <ul>
+                            <li>Ein Kühlschrank verbraucht mehr Energie, wenn er leer ist.</li>
+                            <li>Die durchschnittliche Person verbringt 6 Monate ihres Lebens auf das Warten an Ampeln.</li>
+                            <li>Es gibt mehr Sterne im Universum als Sandkörner auf der Erde. Und mehr Socken in unserer Waschmaschine als beides zusammen.</li>
+                            <li>Honig verdirbt nie. Unsere Projekte schon.</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Zertifizierungen</h3>
+                        <p>Wir sind stolz darauf, folgende Zertifikate zu besitzen:</p>
+                        <ul>
+                            <li>✓ Zertifizierter Kaffeetrinker (Stufe: Koma)</li>
+                            <li>✓ Professioneller Sessel-Tester</li>
+                            <li>✓ Meister der Ausreden</li>
+                            <li>✓ Experte für sinnlose Meetings</li>
+                        </ul>
+                    </section>
+                </aside>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <p>&copy; 2026 Der verrückte Blog. Alle Rechte vorbehalten. Oder auch nicht. Wer liest das schon?</p>
+            <p>Design: <a href="https://html5up.net/future-imperfect">Future Imperfect</a> (aber mit mehr Wahnsinn)</p>
+        </footer>
+    </div>
+</body>
+</html>

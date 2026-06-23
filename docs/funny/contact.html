@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Kontakt | Future Imperfect</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        :root {
+            --primary: #5d8aa8;
+            --primary-dark: #3a6378;
+            --secondary: #87c0cd;
+            --accent: #ff6b6b;
+            --dark: #2c3e50;
+            --light: #f5f7fa;
+            --light-gray: #e0e6eb;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.65;
+            color: #444;
+            background: #fff;
+        }
+        
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+        a:hover { border-color: var(--primary); }
+        
+        strong, b { color: var(--dark); }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        #header {
+            background: var(--dark);
+            color: #fff;
+            padding: 2rem 2rem;
+            text-align: center;
+        }
+        
+        #header h1 {
+            color: #fff;
+            font-size: 2rem;
+            margin: 0;
+        }
+        
+        #header p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+        }
+        
+        #header nav {
+            margin-top: 1.5rem;
+        }
+        
+        #header nav a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+        }
+        
+        #header nav a:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        
+        #main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+        
+        .content > section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .content > aside {
+            flex: 0 0 300px;
+        }
+        
+        .post {
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .post h2 {
+            color: var(--primary);
+        }
+        
+        .image.featured {
+            display: block;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        
+        .image.featured img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .form-container {
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 4px;
+        }
+        
+        .form-container h2 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-container p {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            padding: 0.75rem;
+            border: 1px solid #d0d6db;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-button {
+            padding: 1rem;
+            background: var(--primary);
+            color: #fff !important;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+        }
+        
+        .submit-button:hover {
+            background: var(--primary-dark);
+        }
+        
+        .sidebar {
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .sidebar h3 {
+            color: var(--dark);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar ul li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d0d6db;
+        }
+        
+        .sidebar ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .sidebar ul li a {
+            color: var(--dark);
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: #fff !important;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary-dark);
+        }
+        
+        #footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        #footer a {
+            color: rgba(255, 255, 255, 0.8);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        @media screen and (max-width: 900px) {
+            .content {
+                flex-direction: column;
+            }
+            .content > aside {
+                flex: 1;
+                order: -1;
+            }
+        }
+        
+        .highlight {
+            background: rgba(93, 138, 168, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header id="header">
+            <h1><a href="index.html">Der verrückte Blog</a></h1>
+            <p>Wo die Katzen Piano spielen und die Hunde Steuererklärungen machen</p>
+            <nav>
+                <a href="index.html">Start</a>
+                <a href="about.html">Über Uns</a>
+                <a href="blog.html">Blog</a>
+                <a href="contact.html">Kontakt</a>
+            </nav>
+        </header>
+
+        <div id="main">
+            <div class="content">
+                <section>
+                    <a href="#" class="image featured">
+                        <img src="https://picsum.photos/1200/400?random=8" alt="Kontakt Banner" />
+                    </a>
+                    
+                    <div class="form-container">
+                        <h2>Schreib uns!</h2>
+                        <p>Haben Sie eine Frage, einen Kommentar oder eine Beschwerde über Ihren Kühlschrank? Wir sind hier, um zu helfen! Oder zumindest, um zuzuhören und dann zu vergessen, was Sie gesagt haben.</p>
+                        
+                        <form action="#" method="post">
+                            <div class="form-group">
+                                <label for="name">Ihr Name *</label>
+                                <input type="text" id="name" name="name" placeholder="Wie sollen wir Sie nennen?" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Ihre E-Mail *</label>
+                                <input type="email" id="email" name="email" placeholder="damit wir Ihnen nicht antworten können" required />
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Betreff</label>
+                                <select id="subject" name="subject">
+                                    <option value="">-- Bitte wählen --</option>
+                                    <option value="lob">Lob (wir lieben das!)</option>
+                                    <option value="beschwerde">Beschwerde (wir ignorieren das)</option>
+                                    <option value="frage">Frage (wir raten wild)</option>
+                                    <option value="sonstiges">Sonstiges (wir sind verwirrt)</option>
+                                    <option value="kühlschrank">Kühlschrank-Probleme (wir verstehen)</option>
+                                    <option value="socken">Verschollene Socken (wir helfen nicht)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Ihre Nachricht *</label>
+                                <textarea id="message" name="message" placeholder="Schreiben Sie hier alles, was Sie schon immer einem Fremden im Internet sagen wollten..." required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="newsletter" /> 
+                                    Ja, ich möchte den Newsletter erhalten (wir auch nicht wissen, was das ist)
+                                </label>
+                            </div>
+                            
+                            <p style="font-size: 0.8rem; color: #666; text-align: center;">
+                                * Pflichtfelder. Aber wir zwingen Sie zu nichts. Außer vielleicht, unsere Katzenbilder anzuschauen.
+                            </p>
+                            
+                            <button type="submit" class="submit-button">Nachricht abschicken (und hoffen, dass sie ankommt)</button>
+                        </form>
+                    </div>
+                    
+                    <div class="post">
+                        <h2>Oder kontaktieren Sie uns direkt</h2>
+                        <p>Wenn Sie Formulare hassen (wer tut das nicht?), hier sind unsere Kontaktdaten:</p>
+                        
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <span>📧</span>
+                                <span><strong>E-Mail:</strong> <a href="mailto:kontakt@verrückter-blog.de">kontakt@verrückter-blog.de</a></span>
+                            </div>
+                            <div class="contact-item">
+                                <span>📞</span>
+                                <span><strong>Telefon:</strong> +49 123 456789 (wir heben nicht ab, aber hinterlassen Sie eine Nachricht nach dem Piepton... wenn Sie einen hören)</span>
+                            </div>
+                            <div class="contact-item">
+                                <span>📍</span>
+                                <span><strong>Adresse:</strong> Hauptstraße 1, 12345 Musterstadt (aber kommen Sie nicht vorbei, wir sind nie da)</span>
+                            </div>
+                            <div class="contact-item">
+                                <span>⏰</span>
+                                <span><strong>Öffnungszeiten:</strong> Immer, wenn wir Lust haben (meistens zwischen 2 und 3 Uhr nachts)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 style="margin-top: 2rem;">Häufig gestellte Fragen</h3>
+                        <p><strong>F: Werden Sie auf meine Nachricht antworten?</strong><br />
+                        A: Vielleicht. Wenn wir uns erinnern. Und wenn wir Lust haben. Und wenn unser Kühlschrank uns nicht ablenkt.</p>
+                        
+                        <p><strong>F: Wie schnell antworten Sie?</strong><br />
+                        A: In der Geschwindigkeit des Lichts. Oder in der Geschwindigkeit unserer Motivation. Was auch immer langsamer ist.</p>
+                        
+                        <p><strong>F: Können Sie mir helfen, meine verlorenen Socken zu finden?</strong><br />
+                        A: Nein. Aber wir können Ihnen eine Theorie darüber geben, wo sie hingegangen sind.</p>
+                        
+                        <p><strong>F: Akzeptieren Sie Kuchen als Zahlungsmittel?</strong><br />
+                        A: <span class="highlight">Absolut. Vor allem Schokoladenkuchen.</span></p>
+                    </div>
+                </section>
+
+                <aside class="sidebar">
+                    <section>
+                        <h3>Schnellkontakt</h3>
+                        <div class="social-icons">
+                            <a href="#" title="Twitter">🐦</a>
+                            <a href="#" title="Facebook">📘</a>
+                            <a href="#" title="Instagram">📷</a>
+                            <a href="#" title="LinkedIn">💼</a>
+                            <a href="#" title="E-Mail">✉️</a>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3>Wir sind auch hier</h3>
+                        <ul>
+                            <li><a href="#">Twitter (für sinnlose Gedanken)</a></li>
+                            <li><a href="#">Facebook (für Katzenvideos)</a></li>
+                            <li><a href="#">Instagram (für Essen, das besser aussieht als es schmeckt)</a></li>
+                            <li><a href="#">LinkedIn (wo wir so tun, als wären wir professionell)</a></li>
+                            <li><a href="#">TikTok (für Tanzvideos, die niemand sehen sollte)</a></li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h3>Bürozeiten</h3>
+                        <p>Unsere Bürozeiten sind flexibel. Sehr flexibel. So flexibel, dass sie praktisch nicht existieren.</p>
+                        <ul>
+                            <li><strong>Montag:</strong> Geschlossen (wir erholen uns vom Wochenende)</li>
+                            <li><strong>Dienstag:</strong> Vielleicht geöffnet</li>
+                            <li><strong>Mittwoch:</strong> Geschlossen (wir brauchen eine Pause vom Dienstag)</li>
+                            <li><strong>Donnerstag:</strong> Eventuell geöffnet</li>
+                            <li><strong>Freitag:</strong> Geschlossen (Wochenende beginnt früh)</li>
+                            <li><strong>Wochenende:</strong> Geschlossen (wir schlafen)</li>
+                        </ul>
+                        <p style="font-size: 0.8rem; color: #666; text-align: center;">
+                            * Alle Zeiten sind Richtwerte und können sich ohne Vorwarnung ändern
+                        </p>
+                    </section>
+                </aside>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <p>&copy; 2026 Der verrückte Blog. Alle Rechte vorbehalten. Oder auch nicht. Wer liest das schon?</p>
+            <p>Design: <a href="https://html5up.net/future-imperfect">Future Imperfect</a> (aber mit mehr Wahnsinn)</p>
+        </footer>
+    </div>
+</body>
+</html>
