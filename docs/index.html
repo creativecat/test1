@@ -1,240 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Übersicht - HTML-Seiten</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #4a90e2;
-        }
-
-        header h1 {
-            color: #4a90e2;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-
-        .page-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .page-card {
-            background-color: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .page-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            border-color: #4a90e2;
-        }
-
-        .page-card h2 {
-            color: #4a90e2;
-            font-size: 1.4em;
-            margin-bottom: 10px;
-        }
-
-        .page-card p {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-        }
-
-        .page-card a {
-            display: inline-block;
-            background-color: #4a90e2;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .page-card a:hover {
-            background-color: #3a7bc8;
-        }
-
-        .page-card .icon {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-            color: #888;
-            font-size: 0.9em;
-        }
-
-        @media (max-width: 768px) {
-            .page-list {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            header h1 {
-                font-size: 2em;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Einkaufsliste — Interaktiv</title>
+  <style>
+    :root{--bg:#f7f7fb;--card:#fff;--accent:#2563eb;--danger:#ef4444}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); margin:0; padding:2rem; color:#0f172a}
+    .container{max-width:720px;margin:0 auto}
+    header h1{margin:0 0 .25rem 0;font-size:1.5rem}
+    header p{margin:0 0 1rem 0;color:#475569}
+    .card{background:var(--card);padding:1rem;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.06)}
+    form{display:flex;gap:.5rem;flex-wrap:wrap}
+    input[type=text]{flex:1;padding:.5rem .75rem;border-radius:8px;border:1px solid #e6eef8}
+    button{background:var(--accent);color:white;border:none;padding:.55rem .85rem;border-radius:8px;cursor:pointer}
+    button.danger{background:var(--danger)}
+    ul{list-style:none;padding:0;margin:1rem 0 0 0}
+    li.item{display:flex;align-items:center;gap:.5rem;padding:.5rem;border-radius:8px;border:1px solid #eef2ff;background:linear-gradient(180deg,rgba(37,99,235,0.03),transparent)}
+    .handle{cursor:grab;padding:.25rem .5rem;border-radius:6px;background:#eef2ff}
+    .name{flex:1}
+    .controls{display:flex;gap:.4rem}
+    .muted{color:#64748b;font-size:.9rem}
+    .empty{color:#64748b;padding:1rem;text-align:center}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📄 HTML-Seiten Übersicht</h1>
-            <p>Hier findest du alle verfügbaren HTML-Seiten in diesem Repository.</p>
-        </header>
+  <div class="container">
+    <header>
+      <h1>Einkaufsliste</h1>
+      <p>Füge Artikel hinzu, entferne sie oder sortiere sie per Drag & Drop. Änderungen werden im Browser gespeichert.</p>
+    </header>
 
-        <div class="page-list" id="page-list">
-            <!-- Seiten werden hier dynamisch eingefügt -->
-        </div>
+    <main class="card" id="app">
+      <form id="addForm" aria-label="Artikel hinzufügen">
+        <input type="text" id="itemInput" placeholder="Neuen Artikel eingeben (z. B. Milch)" aria-label="Artikelname" required />
+        <button id="addBtn" type="submit">Hinzufügen</button>
+        <button id="clearBtn" type="button" class="danger" title="Alle Artikel löschen">Alles löschen</button>
+      </form>
 
-        <footer>
-            <p>Letzte Aktualisierung: <span id="last-updated"></span></p>
-        </footer>
-    </div>
+      <p class="muted" id="count"></p>
 
-    <script>
-        // Liste der Seiten mit Beschreibungen
-        const pages = [
-            {
-                filename: "Header.html",
-                title: "Animierter Header",
-                description: "Eine animierte Hommage an den Header der Nürnberg Digital Website mit Türkis, Blau und Gelb.",
-                icon: "🎨"
-            },
-            {
-                filename: "tr.html",
-                title: "Taschenrechner",
-                description: "Ein interaktiver Taschenrechner, der mit der Maus bedient werden kann. Mit Verlaufsfunktion.",
-                icon: "🖩"
-            },
-            {
-                filename: "ekl.html",
-                title: "Einkaufsliste",
-                description: "Eine interaktive Einkaufsliste zum Hinzufügen, Entfernen und Umsortieren von Produkten.",
-                icon: "🛒"
-            },
-            {
-                filename: "pong.html",
-                title: "Pong Spiel",
-                description: "Ein klassisches Pong-Spiel für zwei Spieler auf einer Tastatur.",
-                icon: "🎮"
-            },
-            {
-                filename: "nuernberg_quiz.html",
-                title: "Nürnberg-Quiz",
-                description: "Ein interaktives Quiz mit 10 Fragen über die Stadt Nürnberg.",
-                icon: "🏰"
-            },
-            {
-                filename: "tictactoe.html",
-                title: "Tic-Tac-Toe",
-                description: "Ein klassisches Tic-Tac-Toe-Spiel für zwei Spieler.",
-                icon: "❌⭕"
-            },
-            {
-                filename: "ki_webentwicklung.html",
-                title: "Interaktive Websites mit KI auf GitHub erstellen",
-                description: "Workshop: Lernen Sie, wie Sie mit KI-Chatbots (z.B. Mistral) schnell und einfach interaktive Websites erstellen – ganz ohne Vorkenntnisse. Mit GitHub Deployment.",
-                icon: "🤖"
-            },
-            {
-                filename: "mathematik_memory.html",
-                title: "Mathematik Memory",
-                description: "Ein Memory-Spiel zum Lernen der mathematischen Begriffe der 5. Klasse (Summe, Differenz, Faktor, Produkt, usw.).",
-                icon: "🧠"
-            },
-            {
-                filename: "mediensucht_fragebogen.html",
-                title: "Mediensucht-Fragebogen",
-                description: "Ein Selbsttest für Schülerinnen und Schüler der 7. Klasse mit Auswertung und Tipps.",
-                icon: "📱"
-            },
-            {
-                filename: "testseite/index.html",
-                title: "Die verrückte Welt der Programmierung",
-                description: "Eine lustige Website mit 4 Geschichten aus dem Entwickleralltag. Nachgebaut nach dem Future Imperfect Template von HTML5 UP.",
-                icon: "💻"
-            }
-        ];
+      <ul id="list" aria-live="polite" aria-label="Einkaufsliste"></ul>
+      <p class="empty" id="emptyText">Keine Artikel — füge einen neuen Artikel hinzu.</p>
+    </main>
 
-        // Seiten dynamisch laden
-        function loadPages() {
-            const pageList = document.getElementById('page-list');
-            pageList.innerHTML = '';
+    <footer style="margin-top:.75rem;color:#475569;font-size:.9rem">Tip: Du kannst Elemente mit der linken Maustaste anfassen und verschieben. Die Liste wird lokal gespeichert.</footer>
+  </div>
 
-            pages.forEach(page => {
-                const card = document.createElement('div');
-                card.className = 'page-card';
-                card.innerHTML = `
-                    <div class="icon">${page.icon}</div>
-                    <h2>${page.title}</h2>
-                    <p>${page.description}</p>
-                    <a href="${page.filename}">Öffnen</a>
-                `;
-                pageList.appendChild(card);
-            });
+  <script>
+    // Einfaches Ein-Datei-Webapp: Artikel hinzufügen, entfernen, umsortieren (Drag & Drop), in localStorage speichern.
+    const STORAGE_KEY = 'einkaufsliste.v1'
+    let items = []
 
-            // Datum der letzten Aktualisierung setzen
-            const lastUpdated = new Date(document.lastModified);
-            document.getElementById('last-updated').textContent = lastUpdated.toLocaleDateString('de-DE', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
+    const listEl = document.getElementById('list')
+    const inputEl = document.getElementById('itemInput')
+    const formEl = document.getElementById('addForm')
+    const countEl = document.getElementById('count')
+    const emptyText = document.getElementById('emptyText')
+    const clearBtn = document.getElementById('clearBtn')
 
-        // Seite laden
-        window.addEventListener('load', loadPages);
-    </script>
+    // Laden
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY)
+        items = raw ? JSON.parse(raw) : []
+      } catch (e) { items = [] }
+      render()
+    }
+
+    // Speichern
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
+      updateCount()
+    }
+
+    function updateCount() {
+      countEl.textContent = items.length ? `${items.length} Artikel` : ''
+      emptyText.style.display = items.length ? 'none' : 'block'
+    }
+
+    // Rendern der Liste
+    function render() {
+      listEl.innerHTML = ''
+      items.forEach((it, index) => {
+        const li = document.createElement('li')
+        li.className = 'item'
+        li.draggable = true
+        li.dataset.index = index
+
+        // Drag handle
+        const handle = document.createElement('span')
+        handle.className = 'handle'
+        handle.title = 'Element greifen und ziehen'
+        handle.textContent = '☰'
+        handle.setAttribute('aria-hidden','true')
+        li.appendChild(handle)
+
+        const name = document.createElement('div')
+        name.className = 'name'
+        name.textContent = it
+        li.appendChild(name)
+
+        const controls = document.createElement('div')
+        controls.className = 'controls'
+
+        const up = document.createElement('button')
+        up.type = 'button'
+        up.title = 'Nach oben'
+        up.textContent = '▲'
+        up.addEventListener('click', () => move(index, index - 1))
+        controls.appendChild(up)
+
+        const down = document.createElement('button')
+        down.type = 'button'
+        down.title = 'Nach unten'
+        down.textContent = '▼'
+        down.addEventListener('click', () => move(index, index + 1))
+        controls.appendChild(down)
+
+        const del = document.createElement('button')
+        del.type = 'button'
+        del.title = 'Entfernen'
+        del.textContent = '✕'
+        del.className = 'danger'
+        del.addEventListener('click', () => remove(index))
+        controls.appendChild(del)
+
+        li.appendChild(controls)
+
+        // Drag events
+        li.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', index)
+          e.dataTransfer.effectAllowed = 'move'
+          li.style.opacity = '0.6'
+        })
+        li.addEventListener('dragend', () => { li.style.opacity = '' })
+
+        li.addEventListener('dragover', (e) => {
+          e.preventDefault()
+          e.dataTransfer.dropEffect = 'move'
+        })
+
+        li.addEventListener('drop', (e) => {
+          e.preventDefault()
+          const from = Number(e.dataTransfer.getData('text/plain'))
+          const to = Number(li.dataset.index)
+          if (!Number.isFinite(from) || !Number.isFinite(to)) return
+          reorder(from, to)
+        })
+
+        listEl.appendChild(li)
+      })
+      save()
+    }
+
+    // Reorder by moving element from -> to
+    function reorder(from, to) {
+      if (from === to) return
+      const item = items.splice(from, 1)[0]
+      items.splice(to, 0, item)
+      render()
+    }
+
+    function move(from, to) {
+      if (to < 0) to = 0
+      if (to >= items.length) to = items.length - 1
+      reorder(from, to)
+    }
+
+    function add(text) {
+      const t = text.trim()
+      if (!t) return
+      items.push(t)
+      render()
+      inputEl.value = ''
+      inputEl.focus()
+    }
+
+    function remove(index) {
+      if (index < 0 || index >= items.length) return
+      items.splice(index,1)
+      render()
+    }
+
+    formEl.addEventListener('submit', (e) => {
+      e.preventDefault()
+      add(inputEl.value)
+    })
+
+    clearBtn.addEventListener('click', () => {
+      if (!confirm('Alle Artikel wirklich löschen?')) return
+      items = []
+      render()
+    })
+
+    // Keyboard accessibility: allow dropping by Enter while focused on an item (move to top)
+    listEl.addEventListener('keydown', (e) => {
+      // not implementing complex keyboard reordering here; basic navigation will work
+    })
+
+    // Initial load
+    load()
+
+    // Expose for debugging in console
+    window.einkaufsliste = {get: () => items.slice(), add, remove, reorder}
+  </script>
 </body>
 </html>
