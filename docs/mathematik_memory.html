@@ -27,7 +27,7 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             padding: 30px;
-            max-width: 800px;
+            max-width: 900px;
             width: 100%;
             text-align: center;
         }
@@ -70,7 +70,7 @@
 
         .game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
             padding: 10px;
@@ -89,6 +89,7 @@
             border: 3px solid transparent;
             position: relative;
             overflow: hidden;
+            min-width: 120px;
         }
 
         .card:hover {
@@ -133,16 +134,16 @@
             align-items: center;
             width: 100%;
             height: 100%;
-            padding: 10px;
+            padding: 15px;
         }
 
         .card-content {
-            font-size: 0.85em;
+            font-size: 0.95em;
             font-weight: bold;
             text-align: center;
             word-break: break-word;
             width: 100%;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         .controls {
@@ -235,14 +236,19 @@
             font-weight: bold;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .game-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
 
-            .info-panel {
-                flex-direction: column;
-                align-items: flex-start;
+            .card-content {
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .card-content {
@@ -297,7 +303,7 @@
     </div>
 
     <script>
-        // Mathematik-Begriffe für die 5. Klasse
+        // Mathematik-Begriffe für die 5. Klasse - ALLE Begriffe
         const mathTerms = [
             { term: "Summe", definition: "Ergebnis einer Addition (z.B. 5 + 3 = 8)" },
             { term: "Differenz", definition: "Ergebnis einer Subtraktion (z.B. 10 - 4 = 6)" },
@@ -306,7 +312,16 @@
             { term: "Faktor", definition: "Zahl, die multipliziert wird (z.B. 4 × 5: 4 und 5 sind Faktoren)" },
             { term: "Summand", definition: "Zahl, die addiert wird (z.B. 5 + 3: 5 und 3 sind Summanden)" },
             { term: "Minuend", definition: "Zahl, von der subtrahiert wird (z.B. 10 - 4: 10 ist der Minuend)" },
-            { term: "Subtrahend", definition: "Zahl, die subtrahiert wird (z.B. 10 - 4: 4 ist der Subtrahend)" }
+            { term: "Subtrahend", definition: "Zahl, die subtrahiert wird (z.B. 10 - 4: 4 ist der Subtrahend)" },
+            { term: "Dividend", definition: "Zahl, die geteilt wird (z.B. 15 : 3: 15 ist der Dividend)" },
+            { term: "Divisor", definition: "Zahl, durch die geteilt wird (z.B. 15 : 3: 3 ist der Divisor)" },
+            { term: "Addition", definition: "Rechenart: Zahlen werden addiert (+)" },
+            { term: "Subtraktion", definition: "Rechenart: Zahlen werden subtrahiert (-)" },
+            { term: "Multiplikation", definition: "Rechenart: Zahlen werden multipliziert (×)" },
+            { term: "Division", definition: "Rechenart: Zahlen werden dividiert (:)" },
+            { term: "Potenz", definition: "Mehrfache Multiplikation (z.B. 2³ = 2 × 2 × 2 = 8)" },
+            { term: "Basis", definition: "Grundzahl einer Potenz (z.B. 2³: 2 ist die Basis)" },
+            { term: "Exponent", definition: "Hochzahl einer Potenz (z.B. 2³: 3 ist der Exponent)" }
         ];
 
         // Spielvariablen
@@ -454,7 +469,7 @@
                 pairsDisplay.textContent = pairsFound;
 
                 // Überprüfen, ob alle Paare gefunden wurden
-                if (pairsFound === 8) {
+                if (pairsFound === mathTerms.length) {
                     setTimeout(() => {
                         endGame();
                     }, 500);
