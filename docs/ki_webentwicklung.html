@@ -20,7 +20,6 @@
             height: 100vh;
         }
         
-        /* ===== MODERATORENANSICHT ===== */
         .moderator-container {
             display: none;
             position: fixed;
@@ -210,7 +209,6 @@
             color: #1a1a1a;
         }
         
-        /* ===== PRÄSENTATION ===== */
         .presentation-container {
             height: 100vh;
             overflow: hidden;
@@ -581,17 +579,6 @@
     </div>
 
     <script>
-        const SLIDE_NOTES = [
-            "Herzlich willkommen! Stellen Sie sich vor: Sie beschreiben in einfachen Worten, was Ihre Website können soll – und die KI liefert den vollständigen Code.",
-            "Betonen: KI ersetzt nicht das Verständnis, sondern beschleunigt den Prozess. Keine Vorkenntnisse nötig!",
-            "Live-Demo: Zeigen Sie, wie der Workflow von der Idee zur lauffähigen Website funktioniert.",
-            "Praxistipp: Die Teilnehmer sollten eigene Ideen ausprobieren – Kreativität ist gefragt!",
-            "Wichtig: GitHub-Account und Laptop sind die einzigen Voraussetzungen für den Workshop.",
-            "Hintergrund: Erklären Sie, warum wir Mistral nutzen – europäische Alternative, Datenschutz, Unabhängigkeit von US-Regulierungen.",
-            "Aktuelle Entwicklungen: US-Regulierungen könnten den Zugang zu bestimmten KI-Modellen einschränken. Mistral bietet eine sichere Alternative.",
-            "Zusammenfassung: KI ist ein mächtiges Werkzeug, das den Einstieg erleichtert. Mistral und GitHub sind die perfekte Kombination für europäische Nutzer."
-        ];
-
         // ===== KONFIGURATION =====
         const SLIDE_NOTES = [
             "🎤 **Begrüßung**: Workshop vorstellen, Referent (Matthias Glienke) nennen. Ziel: Interaktive Websites mit KI erstellen. Frage: Wer hat schon mal mit KI gearbeitet?",
@@ -602,16 +589,6 @@
             "🌍 **Warum Mistral?**: Europäische Alternative (Frankreich), DSGVO-konform, offene Modelle, keine Abhängigkeit von US-Regulierungen. Vergleich: Open-Source vs. Closed-Source (z.B. OpenAI).",
             "🔍 **Aktuelle Lage**: US-Regulierungen (z.B. Fable 5, Mythos 5) könnten Zugang zu KI-Modellen einschränken. Mistral als sichere Wahl für europäische Nutzer. Beispiel: Exportkontrollen, Datenschutzbedenken.",
             "🎯 **Zusammenfassung & Ausblick**: KI als Werkzeug – nicht als Ersatz für Kreativität. Mistral + GitHub = perfekte Kombination für schnelle, datenschutzfreundliche Websites. Frage: Wer möchte es selbst ausprobieren?"
-        ];
-        const SLIDE_NOTES = [
-            "Herzlich willkommen! Stellen Sie sich vor: Sie beschreiben in einfachen Worten, was Ihre Website können soll – und die KI liefert den vollständigen Code.",
-            "Betonen: KI ersetzt nicht das Verständnis, sondern beschleunigt den Prozess. Keine Vorkenntnisse nötig!",
-            "Live-Demo: Zeigen Sie, wie der Workflow von der Idee zur lauffähigen Website funktioniert.",
-            "Praxistipp: Die Teilnehmer sollten eigene Ideen ausprobieren – Kreativität ist gefragt!",
-            "Wichtig: GitHub-Account und Laptop sind die einzigen Voraussetzungen für den Workshop.",
-            "Hintergrund: Erklären Sie, warum wir Mistral nutzen – europäische Alternative, Datenschutz, Unabhängigkeit von US-Regulierungen.",
-            "Aktuelle Entwicklungen: US-Regulierungen könnten den Zugang zu bestimmten KI-Modellen einschränken. Mistral bietet eine sichere Alternative.",
-            "Zusammenfassung: KI ist ein mächtiges Werkzeug, das den Einstieg erleichtert. Mistral und GitHub sind die perfekte Kombination für europäische Nutzer."
         ];
 
         const SLIDE_TITLES = [
@@ -636,7 +613,6 @@
 
         // ===== INITIALISIERUNG =====
         document.addEventListener('DOMContentLoaded', function() {
-            // Datum setzen
             const now = new Date();
             const dateString = now.toLocaleDateString('de-DE', {
                 weekday: 'long',
@@ -646,7 +622,6 @@
             });
             document.getElementById('presentationDate').textContent = dateString;
 
-            // Uhrzeit aktualisieren
             function updateClock() {
                 const now = new Date();
                 const timeString = now.toLocaleTimeString('de-DE');
@@ -656,7 +631,6 @@
             updateClock();
             setInterval(updateClock, 1000);
 
-            // Timer-Funktionen
             function formatTime(seconds) {
                 const hours = Math.floor(seconds / 3600);
                 const minutes = Math.floor((seconds % 3600) / 60);
@@ -701,7 +675,6 @@
                 }
             }
 
-            // Prüfe, ob Moderatorenansicht
             const urlParams = new URLSearchParams(window.location.search);
             const isModerator = urlParams.get('moderator') === 'true';
 
@@ -711,14 +684,12 @@
                 initPresentation();
             }
 
-            // Tastatursteuerung
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'm' || e.key === 'M') {
                     e.preventDefault();
                     const currentUrl = window.location.href;
                     const baseUrl = currentUrl.split('?')[0];
                     const hasModerator = currentUrl.includes('moderator=true');
-                    
                     if (hasModerator) {
                         window.open(baseUrl, '_blank');
                     } else {
@@ -727,49 +698,35 @@
                 }
             });
 
-            // ===== PRÄSENTATION =====
             function initPresentation() {
                 const slides = document.querySelectorAll('.slide');
-                const slidesContainer = document.getElementById('slides');
                 const slideNumberEl = document.getElementById('slideNumber');
 
-                // Lade gespeicherten Index
                 const savedIndex = localStorage.getItem(storageKey);
                 if (savedIndex) {
                     currentSlideIndex = parseInt(savedIndex);
                 }
 
-                // Zeige aktuelle Folie
                 function showSlide(index) {
                     slides.forEach(slide => slide.classList.remove('active'));
                     if (slides[index]) {
                         slides[index].classList.add('active');
                     }
-                    
-                    // Aktualisiere Foliennummer
                     if (slideNumberEl) {
                         slideNumberEl.textContent = (index + 1) + ' / ' + totalSlides;
                     }
-
-                    // Speichere in localStorage
                     localStorage.setItem(storageKey, index);
                     localStorage.setItem(storageKey + '-timestamp', Date.now());
                     localStorage.setItem(storageKey + '-title', SLIDE_TITLES[index] || '');
-
-                    // Reset slide timer
                     stopSlideTimer();
                     resetSlideTimer();
                     startSlideTimer();
-
-                    // Zeige Fragmente nach und nach
                     showFragments(index);
                 }
 
-                // Fragmente anzeigen
                 function showFragments(index) {
                     const slide = slides[index];
                     if (!slide) return;
-
                     const fragments = slide.querySelectorAll('.fragment');
                     fragments.forEach((fragment, i) => {
                         fragment.classList.remove('visible');
@@ -779,7 +736,6 @@
                     });
                 }
 
-                // Navigation
                 function nextSlide() {
                     if (currentSlideIndex < totalSlides - 1) {
                         currentSlideIndex++;
@@ -804,7 +760,6 @@
                     showSlide(currentSlideIndex);
                 }
 
-                // Tastatur-Navigation
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'ArrowRight' || e.key === ' ') {
                         e.preventDefault();
@@ -821,34 +776,25 @@
                     }
                 });
 
-                // Swipe-Gesten für Touch
                 let touchStartX = 0;
                 let touchEndX = 0;
-
                 document.addEventListener('touchstart', function(e) {
                     touchStartX = e.changedTouches[0].screenX;
                 }, false);
-
                 document.addEventListener('touchend', function(e) {
                     touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                }, false);
-
-                function handleSwipe() {
                     if (touchEndX < touchStartX - 50) {
                         nextSlide();
                     }
                     if (touchEndX > touchStartX + 50) {
                         prevSlide();
                     }
-                }
+                }, false);
 
-                // Initial anzeigen
                 showSlide(currentSlideIndex);
                 startTotalTimer();
                 startSlideTimer();
 
-                // Auf localStorage-Änderungen reagieren
                 window.addEventListener('storage', function(e) {
                     if (e.key === storageKey) {
                         const newIndex = parseInt(e.newValue);
@@ -860,7 +806,6 @@
                 });
             }
 
-            // ===== MODERATORENANSICHT =====
             function showModeratorView() {
                 document.querySelector('.presentation-container').style.display = 'none';
                 document.getElementById('moderatorView').style.display = 'block';
