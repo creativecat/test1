@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt | RoboterTech</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #7c3aed;
+            --accent: #10b981;
+            --dark: #111827;
+            --dark-soft: #1f2937;
+            --gray: #6b7280;
+            --light: #f9fafb;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+            --error: #ef4444;
+            --success: #10b981;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            transition: var(--transition);
+        }
+        
+        .header.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(17, 24, 39, 0.98);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        
+        .logo span { color: var(--primary); }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--white);
+        }
+        
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            transition: var(--transition);
+        }
+        
+        .hero-section {
+            height: 80vh;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(17, 24, 39, 0.7);
+            z-index: 1;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+            text-align: center;
+            color: var(--white);
+        }
+        
+        .slide-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .slide-content p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            margin-left: 1rem;
+        }
+        
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--dark);
+        }
+        
+        .slider-nav {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 2;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .slider-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+        
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 2;
+        }
+        
+        .slider-arrow:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .slider-arrow.prev { left: 2rem; }
+        .slider-arrow.next { right: 2rem; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section {
+            padding: 5rem 0;
+        }
+        
+        .section-light {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .section-dark {
+            background: var(--dark-soft);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .contact-section {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        
+        .contact-info {
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .contact-item p {
+            margin: 0;
+            color: var(--gray);
+        }
+        
+        .contact-item a {
+            color: var(--dark);
+            text-decoration: none;
+        }
+        
+        .contact-item a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        .form-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-title h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-title p {
+            color: var(--gray);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-control.error {
+            border-color: var(--error);
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .submit-btn:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
+        }
+        
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .contact-method {
+            background: var(--dark);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .contact-method-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .contact-method h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-method p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .contact-method a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .contact-method a:hover {
+            color: var(--primary);
+        }
+        
+        .location-section {
+            background: var(--dark-soft);
+        }
+        
+        .location-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .map-container {
+            height: 400px;
+            background: #374151;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+        
+        .address-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .address-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .address-item i {
+            color: var(--primary);
+        }
+        
+        .faq-section {
+            background: var(--light);
+            color: var(--dark);
+        }
+        
+        .faq-item {
+            background: var(--white);
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .faq-question:hover {
+            background: #f9fafb;
+        }
+        
+        .faq-question h4 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        
+        .faq-icon {
+            font-size: 1.25rem;
+            transition: var(--transition);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+            color: var(--gray);
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        .footer {
+            background: var(--dark);
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-column ul li a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+        
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--primary-dark);
+        }
+        
+        .form-message {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .form-message.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            display: block;
+        }
+        
+        .form-message.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hamburger { display: flex; }
+            .slide-content h1 { font-size: 2rem; }
+            .slide-content p { font-size: 1rem; }
+            .slider-nav { bottom: 1rem; }
+            .slider-arrow { width: 40px; height: 40px; font-size: 1.25rem; }
+            .slider-arrow.prev { left: 1rem; }
+            .slider-arrow.next { right: 1rem; }
+            .contact-container { grid-template-columns: 1fr; }
+            .location-container { grid-template-columns: 1fr; }
+            .section-title h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header">
+        <div class="nav-container">
+            <div class="logo">Roboter<span>Tech</span></div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Start</a></li>
+                    <li><a href="features.html">Funktionen</a></li>
+                    <li><a href="technologies.html">Technologien</a></li>
+                    <li><a href="about.html">Über uns</a></li>
+                    <li><a href="contact.html" class="active">Kontakt</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    
+    <section class="hero-section">
+        <div class="slider" id="slider">
+            <div class="slide active" style="background-image: url('https://picsum.photos/1920/1080?random=50');">
+                <div class="slide-content">
+                    <h1>Kontaktieren Sie uns</h1>
+                    <p>Wir freuen uns darauf, von Ihnen zu hören. Egal ob Sie Fragen haben, eine Demo wünschen oder eine individuelle Lösung benötigen - wir sind für Sie da.</p>
+                    <a href="#contact-form" class="btn">Kontaktformular</a>
+                    <a href="#contact-info" class="btn btn-outline">Kontaktdaten</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://picsum.photos/1920/1080?random=51');">
+                <div class="slide-content">
+                    <h1>Individuelle Beratung</h1>
+                    <p>Unsere Expert:innen beraten Sie gerne persönlich und finden die perfekte Lösung für Ihre Anforderungen.</p>
+                    <a href="#contact-form" class="btn">Termin vereinbaren</a>
+                    <a href="tel:+49123456789" class="btn btn-outline">Jetzt anrufen</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://picsum.photos/1920/1080?random=52');">
+                <div class="slide-content">
+                    <h1>Support & Service</h1>
+                    <p>Unser Support-Team steht Ihnen bei Fragen und Problemen jederzeit zur Verfügung. Wir sind für Sie da.</p>
+                    <a href="#faq" class="btn">Häufige Fragen</a>
+                    <a href="#location" class="btn btn-outline">Unser Standort</a>
+                </div>
+            </div>
+            <div class="slider-nav" id="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+            </div>
+            <button class="slider-arrow prev" id="prev-btn">❮</button>
+            <button class="slider-arrow next" id="next-btn">❯</button>
+        </div>
+    </section>
+    
+    <section class="section contact-section" id="contact-form">
+        <div class="container">
+            <div class="section-title">
+                <h2>Kontaktieren Sie uns</h2>
+                <p>Füllen Sie das Formular aus und wir melden uns so schnell wie möglich bei Ihnen</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info" id="contact-info">
+                    <h3>Kontaktdaten</h3>
+                    <p>Sie können uns auch direkt über die folgenden Kanäle erreichen:</p>
+                    
+                    <div class="contact-item">
+                        <i>📞</i>
+                        <p><a href="tel:+49123456789">+49 123 456789</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <i>✉️</i>
+                        <p><a href="mailto:info@robotertech.de">info@robotertech.de</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <i>📍</i>
+                        <p>RoboterTech GmbH<br>Industriestraße 15<br>12345 Berlin, Deutschland</p>
+                    </div>
+                    
+                    <h3 style="margin-top: 2rem;">Folgen Sie uns</h3>
+                    <div class="social-links">
+                        <a href="#" title="LinkedIn">💼</a>
+                        <a href="#" title="Twitter">🐦</a>
+                        <a href="#" title="Facebook">📘</a>
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="YouTube">📺</a>
+                    </div>
+                </div>
+                
+                <div class="form-container">
+                    <div class="form-title">
+                        <h3>Schreiben Sie uns</h3>
+                        <p>Wir freuen uns auf Ihre Nachricht</p>
+                    </div>
+                    
+                    <div class="form-message" id="form-message"></div>
+                    
+                    <form id="contactForm" novalidate>
+                        <div class="form-group">
+                            <label for="name">Ihr Name *</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Ihr vollständiger Name" required>
+                            <div class="error-message" id="name-error">Bitte geben Sie Ihren Namen ein</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Ihre E-Mail-Adresse *</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Ihre E-Mail-Adresse" required>
+                            <div class="error-message" id="email-error">Bitte geben Sie eine gültige E-Mail-Adresse ein</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Telefonnummer</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="Ihre Telefonnummer">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Betreff *</label>
+                            <select id="subject" name="subject" class="form-control" required>
+                                <option value="">-- Bitte wählen --</option>
+                                <option value="general">Allgemeine Anfrage</option>
+                                <option value="demo">Demo-Anfrage</option>
+                                <option value="support">Technischer Support</option>
+                                <option value="sales">Vertrieb</option>
+                                <option value="career">Bewerbung</option>
+                            </select>
+                            <div class="error-message" id="subject-error">Bitte wählen Sie einen Betreff</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Ihre Nachricht *</label>
+                            <textarea id="message" name="message" class="form-control" placeholder="Wie können wir Ihnen helfen?" required></textarea>
+                            <div class="error-message" id="message-error">Bitte geben Sie Ihre Nachricht ein</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="privacy" name="privacy" required>
+                                Ich stimme der Verarbeitung meiner Daten gemäß der <a href="#" style="color: var(--primary);">Datenschutzerklärung</a> zu *
+                            </label>
+                            <div class="error-message" id="privacy-error">Bitte stimmen Sie der Datenschutzerklärung zu</div>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submit-btn">Nachricht absenden</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-title">
+                <h2>Weitere Kontaktmöglichkeiten</h2>
+                <p>Wählen Sie die für Sie passende Kontaktmethode</p>
+            </div>
+            
+            <div class="contact-methods">
+                <div class="contact-method">
+                    <div class="contact-method-icon">📞</div>
+                    <h3>Telefon</h3>
+                    <p>Schnelle Hilfe und Beratung unter:</p>
+                    <a href="tel:+49123456789">+49 123 456789</a>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--gray);">Mo-Fr: 9:00-18:00 Uhr</p>
+                </div>
+                <div class="contact-method">
+                    <div class="contact-method-icon">✉️</div>
+                    <h3>E-Mail</h3>
+                    <p>Schreiben Sie uns eine E-Mail:</p>
+                    <a href="mailto:info@robotertech.de">info@robotertech.de</a>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--gray);">Antwort innerhalb von 24 Stunden</p>
+                </div>
+                <div class="contact-method">
+                    <div class="contact-method-icon">💬</div>
+                    <h3>Live-Chat</h3>
+                    <p>Chatten Sie direkt mit unserem Team:</p>
+                    <a href="#">Live-Chat starten</a>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--gray);">Mo-Fr: 9:00-17:00 Uhr</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section location-section" id="location">
+        <div class="container">
+            <div class="section-title">
+                <h2>Unser Standort</h2>
+                <p>Besuchen Sie uns in unserem Hauptsitz in Berlin</p>
+            </div>
+            
+            <div class="location-container">
+                <div class="map-container">
+                    <p>📍 Karte wird geladen...</p>
+                </div>
+                <div class="address-info">
+                    <h3>RoboterTech GmbH</h3>
+                    <div class="address-item">
+                        <i>🏢</i>
+                        <p>Industriestraße 15</p>
+                    </div>
+                    <div class="address-item">
+                        <i>🗺️</i>
+                        <p>12345 Berlin, Deutschland</p>
+                    </div>
+                    <div class="address-item">
+                        <i>📞</i>
+                        <p><a href="tel:+49123456789" style="color: var(--white);">+49 123 456789</a></p>
+                    </div>
+                    <div class="address-item">
+                        <i>✉️</i>
+                        <p><a href="mailto:info@robotertech.de" style="color: var(--white);">info@robotertech.de</a></p>
+                    </div>
+                    <div class="address-item">
+                        <i>⏰</i>
+                        <p>Mo-Fr: 9:00-18:00 Uhr</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section faq-section" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Häufig gestellte Fragen</h2>
+                <p>Antworten auf die häufigsten Fragen unserer Kunden</p>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Wie kann ich eine Demo anfordern?</h4>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sie können eine Demo ganz einfach über unser Kontaktformular anfordern. Wählen Sie einfach "Demo-Anfrage" als Betreff aus und teilen Sie uns mit, welche Technologien oder Lösungen Sie interessieren. Unser Team wird sich dann mit Ihnen in Verbindung setzen, um einen Termin zu vereinbaren.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Bieten Sie Schulungen an?</h4>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ja, wir bieten umfassende Schulungen für unsere Roboterlösungen an. Unsere Schulungen umfassen sowohl grundlegende als auch fortgeschrittene Themen und können individuell auf Ihre Anforderungen zugeschnitten werden. Die Schulungen können bei uns vor Ort oder in Ihren Räumlichkeiten stattfinden.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Wie lange dauert die Implementierung?</h4>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Die Implementierungsdauer hängt von der Komplexität der Lösung und Ihren spezifischen Anforderungen ab. Einfache Lösungen können oft innerhalb weniger Wochen implementiert werden, während komplexere Projekte mehrere Monate in Anspruch nehmen können. Wir erstellen gerne einen detaillierten Zeitplan für Ihr Projekt.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Bieten Sie Support an?</h4>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ja, wir bieten verschiedenen Support-Pakete an, die auf Ihre Bedürfnisse zugeschnitten sind. Von grundlegendem Support während der Geschäftszeiten bis hin zu 24/7-Premium-Support mit dediziertem Account Manager. Unsere Support-Teams sind hochqualifiziert und können Ihnen bei allen Fragen und Problemen helfen.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h4>Können Ihre Lösungen in bestehende Systeme integriert werden?</h4>
+                        <span class="faq-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ja, unsere Roboterlösungen sind so konzipiert, dass sie sich nahtlos in bestehende Systeme und Arbeitsabläufe integrieren lassen. Wir arbeiten eng mit Ihnen zusammen, um sicherzustellen, dass unsere Technologien optimal in Ihre bestehende Infrastruktur passen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">Bereit für den nächsten Schritt?</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.9;">Kontaktieren Sie uns noch heute und starten Sie Ihre Reise in die Zukunft der Robotertechnologie.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#contact-form" class="btn">Zum Kontaktformular</a>
+                <a href="index.html" class="btn btn-outline">Zurück zur Startseite</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>RoboterTech</h3>
+                    <p>Innovative Lösungen für eine intelligente Zukunft.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li><a href="index.html">Start</a></li>
+                        <li><a href="features.html">Funktionen</a></li>
+                        <li><a href="technologies.html">Technologien</a></li>
+                        <li><a href="about.html">Über uns</a></li>
+                        <li><a href="contact.html" class="active">Kontakt</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Kontakt</h3>
+                    <ul>
+                        <li><a href="tel:+49123456789">+49 123 456789</a></li>
+                        <li><a href="mailto:info@robotertech.de">info@robotertech.de</a></li>
+                        <li><a href="#">Live-Chat</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Rechtliches</h3>
+                    <ul>
+                        <li><a href="#">Impressum</a></li>
+                        <li><a href="#">Datenschutz</a></li>
+                        <li><a href="#">AGB</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 RoboterTech. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <button class="scroll-top" id="scroll-top">↑</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Slider
+            const slider = document.getElementById('slider');
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.slider-dot');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            let currentSlide = 0;
+            let slideInterval;
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentSlide = index;
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+            
+            function startAutoSlide() {
+                slideInterval = setInterval(nextSlide, 5000);
+            }
+            
+            function stopAutoSlide() {
+                clearInterval(slideInterval);
+            }
+            
+            nextBtn.addEventListener('click', () => { nextSlide(); stopAutoSlide(); startAutoSlide(); });
+            prevBtn.addEventListener('click', () => { prevSlide(); stopAutoSlide(); startAutoSlide(); });
+            dots.forEach((dot, index) => dot.addEventListener('click', () => { showSlide(index); stopAutoSlide(); startAutoSlide(); }));
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') { nextSlide(); stopAutoSlide(); startAutoSlide(); }
+                else if (e.key === 'ArrowLeft') { prevSlide(); stopAutoSlide(); startAutoSlide(); }
+            });
+            showSlide(0); startAutoSlide();
+            slider.addEventListener('mouseenter', stopAutoSlide);
+            slider.addEventListener('mouseleave', startAutoSlide);
+            
+            // Scroll effects
+            const header = document.getElementById('header');
+            const scrollTopBtn = document.getElementById('scroll-top');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+                if (window.scrollY > 300) scrollTopBtn.classList.add('visible');
+                else scrollTopBtn.classList.remove('visible');
+            });
+            scrollTopBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // Animations
+            const animateOnScroll = function() {
+                const elements = document.querySelectorAll('.contact-container, .contact-method, .location-container, .faq-item');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    if (elementPosition < windowHeight * 0.85) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            document.querySelectorAll('.contact-container, .contact-method, .location-container, .faq-item').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            });
+            window.addEventListener('scroll', animateOnScroll);
+            window.addEventListener('load', animateOnScroll);
+            animateOnScroll();
+            
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    faqItems.forEach(otherItem => { if (otherItem !== item) otherItem.classList.remove('active'); });
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Form Validation
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('form-message');
+            const submitBtn = document.getElementById('submit-btn');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+                const fields = ['name', 'email', 'subject', 'message', 'privacy'];
+                fields.forEach(field => {
+                    const input = document.getElementById(field);
+                    const error = document.getElementById(field + '-error');
+                    if (input && error) {
+                        input.classList.remove('error');
+                        error.style.display = 'none';
+                    }
+                });
+                
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value.trim();
+                const privacy = document.getElementById('privacy').checked;
+                
+                if (name === '') { document.getElementById('name').classList.add('error'); document.getElementById('name-error').style.display = 'block'; isValid = false; }
+                if (email === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('email').classList.add('error'); document.getElementById('email-error').style.display = 'block'; isValid = false; }
+                if (subject === '') { document.getElementById('subject').classList.add('error'); document.getElementById('subject-error').style.display = 'block'; isValid = false; }
+                if (message === '') { document.getElementById('message').classList.add('error'); document.getElementById('message-error').style.display = 'block'; isValid = false; }
+                if (!privacy) { document.getElementById('privacy-error').style.display = 'block'; isValid = false; }
+                
+                if (isValid) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Wird gesendet...';
+                    formMessage.textContent = 'Vielen Dank für Ihre Nachricht! Wir werden uns so schnell wie möglich bei Ihnen melden.';
+                    formMessage.className = 'form-message success';
+                    setTimeout(() => { contactForm.reset(); formMessage.className = 'form-message'; formMessage.style.display = 'none'; submitBtn.disabled = false; submitBtn.textContent = 'Nachricht absenden'; }, 3000);
+                } else {
+                    formMessage.textContent = 'Bitte füllen Sie alle Pflichtfelder korrekt aus.';
+                    formMessage.className = 'form-message error';
+                }
+            });
+            
+            ['name', 'email', 'subject', 'message'].forEach(inputId => {
+                const input = document.getElementById(inputId);
+                if (input) input.addEventListener('input', function() {
+                    if (input.value.trim() !== '') { input.classList.remove('error'); document.getElementById(inputId + '-error').style.display = 'none'; }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
