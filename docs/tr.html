@@ -269,10 +269,23 @@
         let previousInput = '';
         let operation = null;
         let resetInput = false;
-        const history = [];
+        let history = [];
 
         const display = document.getElementById('display');
         const historyElement = document.getElementById('history');
+
+        // Lade den Verlauf aus dem LocalStorage
+        function loadHistory() {
+            const savedHistory = localStorage.getItem('calculatorHistory');
+            if (savedHistory) {
+                history = JSON.parse(savedHistory);
+            }
+        }
+
+        // Speichere den Verlauf im LocalStorage
+        function saveHistory() {
+            localStorage.setItem('calculatorHistory', JSON.stringify(history));
+        }
 
         function updateDisplay() {
             display.textContent = currentInput;
@@ -346,6 +359,7 @@
             const historyEntry = `${previousInput} ${getDisplayOperator(operation)} ${currentInput} = ${result}`;
             history.unshift(historyEntry);
             if (history.length > 5) history.pop();
+            saveHistory();
             updateHistory();
 
             currentInput = result.toString();
@@ -400,7 +414,9 @@
         });
 
         // Initialisierung
+        loadHistory();
         updateDisplay();
+        updateHistory();
     </script>
 </body>
 </html>

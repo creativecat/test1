@@ -287,6 +287,19 @@
         const productCountElement = document.getElementById('product-count');
         const totalQuantityElement = document.getElementById('total-quantity');
 
+        // Lade die Einkaufsliste aus dem LocalStorage
+        function loadShoppingList() {
+            const savedList = localStorage.getItem('shoppingList');
+            if (savedList) {
+                shoppingList = JSON.parse(savedList);
+            }
+        }
+
+        // Speichere die Einkaufsliste im LocalStorage
+        function saveShoppingList() {
+            localStorage.setItem('shoppingList', JSON.stringify(shoppingList));
+        }
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 addProduct();
@@ -305,11 +318,13 @@
 
             shoppingList.push(newProduct);
             productInput.value = '';
+            saveShoppingList();
             renderList();
         }
 
         function removeProduct(id) {
             shoppingList = shoppingList.filter(product => product.id !== id);
+            saveShoppingList();
             renderList();
         }
 
@@ -320,6 +335,7 @@
                 if (product.quantity <= 0) {
                     removeProduct(id);
                 } else {
+                    saveShoppingList();
                     renderList();
                 }
             }
@@ -328,17 +344,20 @@
         function clearList() {
             if (confirm('Möchtest du wirklich alle Produkte aus der Liste entfernen?')) {
                 shoppingList = [];
+                saveShoppingList();
                 renderList();
             }
         }
 
         function sortAlphabetically() {
             shoppingList.sort((a, b) => a.name.localeCompare(b.name));
+            saveShoppingList();
             renderList();
         }
 
         function sortByQuantity() {
             shoppingList.sort((a, b) => b.quantity - a.quantity);
+            saveShoppingList();
             renderList();
         }
 
@@ -415,6 +434,7 @@
                 const item = shoppingList.splice(fromIndex, 1)[0];
                 shoppingList.splice(toIndex, 0, item);
 
+                saveShoppingList();
                 renderList();
             }
         }
@@ -427,6 +447,7 @@
         }
 
         // Initialisierung
+        loadShoppingList();
         renderList();
     </script>
 </body>
